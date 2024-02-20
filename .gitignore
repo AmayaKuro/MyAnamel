@@ -1,0 +1,13 @@
+# ============ Global ============ #
+# Ignore node_modules
+node_modules
+
+# Ignore production
+dist
+
+# ============  Other  ============= #
+# Ignore .vscode
+.vscode/
+
+# Ignore .idea
+.idea/
