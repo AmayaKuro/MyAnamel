@@ -1,1 +1,3 @@
 # ============  BE  ============= #
+# Ignore public videos
+public/videos
