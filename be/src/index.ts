@@ -14,7 +14,8 @@ const port = 8000;
 // Middlewares
 const corsOptions = {
     origin: ["http://localhost:3000"],
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    credentials: true,
 }
 
 app.use(morgan('tiny'));
