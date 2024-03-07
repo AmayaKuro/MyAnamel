@@ -1,6 +1,8 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 
+import VideoPlayer from "@components/video/VideoPlayer";
+
 export default function Home() {
   return (
     <main className={styles.main}>
@@ -37,6 +39,13 @@ export default function Home() {
           height={37}
           priority
         />
+      </div>
+      <div className={styles.center} style={{ margin: "auto" }}>
+        <VideoPlayer
+          manifest="http://localhost:8000/videos/transcoded/folder/playlist.m3u8"
+          poster="https://bitdash-a.akamaihd.net/content/sintel/poster.png"
+        />
+        {/* <Image src="http://localhost:8000/videos/full/1.png" alt="lmaoedádddddddddddddddddddasdwqeqsadisamcizmxcioxzicjioa" width={450} height={300} /> */}
       </div>
 
       <div className={styles.grid}>
