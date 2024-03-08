@@ -3,24 +3,25 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import styles from "@css/video/VideoPlayer.module.css";
 
 interface VideoProps {
   manifest: string;
   poster: string;
   posterMobile?: string;
 }
-// import HLSPlayer from "./HLSPlayer";
-  const HLSPlayer = dynamic(() => import("./HLSPlayer"), {
-    loading: () => <VideoFallback />,
-  });
+
+const HLSPlayer = dynamic(() => import("./HLSPlayer"), {
+  loading: () => <VideoFallback />,
+});
 
 const VideoPlayer: React.FC<VideoProps> = ({ manifest, poster, posterMobile = poster }) => {
   // TODO:  Use this to set the video poster
   const [video, setVideo] = useState<HTMLVideoElement | null>(null); // use callback state instead of ref due to hydration of SSR stream
   // When manifest changes -> update video -> update poster
-  let [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
     // Add device detech 
@@ -40,7 +41,7 @@ const VideoPlayer: React.FC<VideoProps> = ({ manifest, poster, posterMobile = po
     <>
       <Head>
         <link rel="preconnect" href={manifest} />
-        {/* Preload posters based on device width */}
+        {/* Preload both mobile and desktop posters */}
         <link
           rel="preload"
           href={poster}
@@ -57,19 +58,15 @@ const VideoPlayer: React.FC<VideoProps> = ({ manifest, poster, posterMobile = po
         />
       </Head>
 
-      <div className="" style={{ "minWidth": "500px" }}>
-        {/*<Suspense fallback={<VideoFallback poster={isMobile ? posterMobile : poster} />}>*/} {/* Render video fallback with preloaded poster */}
+      <div className={styles.videoPlayer}>
         <HLSPlayer
-          className=""
+          className={styles.mainVideo}
           playsInline
           controls
           manifest={manifest}
           poster={isMobile ? posterMobile : poster}
           fowardVideoRef={setVideo}
-          width={500}
-          height={300}
         />
-        {/* </Suspense> */}
       </div>
     </>
   );

@@ -22,8 +22,6 @@ const HLSPlayer: React.FC<HLSPlayerProps> = (
             const { current: video } = videoRef;
             if (!video) return;
 
-            let hls: HLS | null;
-
             if (video.canPlayType("application/vnd.apple.mpegurl")) { // Safari
                 video.src = src;
             } else if (HLS.isSupported()) {
@@ -37,17 +35,13 @@ const HLSPlayer: React.FC<HLSPlayerProps> = (
                     );
                 });
 
-                console.log("Some kind of safari", video.canPlayType("application/vnd.apple.mpegurl"));
-
                 hls.loadSource(src);
                 hls.attachMedia(video);
             }
         }, [manifest]);
 
         return (
-            <video {...props} ref={videoRef}>
-                <source src={manifest} type={props.type} />
-            </video>
+            <video {...props} ref={videoRef} />
         );
     }
 );
