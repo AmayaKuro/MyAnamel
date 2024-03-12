@@ -5,6 +5,9 @@ node_modules
 # Ignore production
 dist
 
+# Ignore .env
+.env
+
 # ============  Other  ============= #
 # Ignore .vscode
 .vscode/

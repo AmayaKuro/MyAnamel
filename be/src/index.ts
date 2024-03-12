@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
 
@@ -9,8 +10,11 @@ import videos from './routes/videos.js';
 import convertVideo from './utils/ffmpeg.js';
 
 
+// Options
 const app = express();
 const port = 8000;
+
+dotenv.config();
 
 app.disable('x-powered-by');
 
@@ -20,7 +24,7 @@ const corsOptions = {
     origin: ["http://localhost:3000"],
 }
 
-app.use(morgan('tiny'), cors(corsOptions), commonHeader);
+app.use(morgan("dev"), cors(corsOptions), commonHeader);
 
 
 // Routes
