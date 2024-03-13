@@ -1,8 +1,9 @@
 "use client";
-import { useState, useEffect, useMemo, useContext, createContext, Dispatch, SetStateAction } from "react";
+import { useState, useMemo, useContext, createContext, Dispatch, SetStateAction } from "react";
 import { type AlertColor } from '@mui/material/Alert';
 
 import AlertPopUp from "@/components/AlertPopUp";
+
 
 type AlertContextProps = {
     state: {

@@ -6,12 +6,6 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { useAlert } from "@/utils/providers/alert";
 
 
-type AlertContextProps = {
-    alertMessage: string;
-    severity?: "success" | "info" | "warning" | "error";
-}
-
-
 const AlertPopUp: React.FC = () => {
     const [open, setOpen] = useState(false);
     
