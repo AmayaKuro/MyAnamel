@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import Alert from "@/utils/providers/alert";
+import { Theme } from "@utils/providers/framework";
+import Alert from "@utils/providers/alert";
+import Navbar from "@components/navbar";
 
 import "./globals.css";
 
@@ -18,12 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-mui-color-scheme="dark">
       <body className={inter.className}>
-        <Alert>
-          {children}
-        </Alert>
-      </body>
-    </html>
+        <Theme>
+          <Alert>
+            {children}
+            <Navbar />
+          </Alert>
+        </Theme>
+      </body >
+    </html >
   );
 }
