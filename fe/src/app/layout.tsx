@@ -24,8 +24,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <Theme>
           <Alert>
-            {children}
             <Navbar />
+            {children}
           </Alert>
         </Theme>
       </body >

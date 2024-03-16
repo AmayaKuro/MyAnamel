@@ -1,0 +1,29 @@
+.navbar {
+    height: 56px;
+    padding: 0 16px;
+    width: 100%;
+    gap: 2rem;
+    position: sticky;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.start {
+    flex: 0 0 80px;
+}
+
+.center {
+    flex: 0 1 732px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.end {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
