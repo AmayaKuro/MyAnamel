@@ -2,6 +2,7 @@ import { MongoClient, WithId } from "mongodb";
 
 import { MONGO_URI } from "./env.js";
 
+
 const DBClient = new MongoClient(MONGO_URI);
 
 const DB = DBClient.db("MyAnamel");
@@ -16,7 +17,7 @@ const DBFilm = DB.collection<{
     slug: string;
     name: string;
     originName: string;
-    categoryID: string[];
+    categories: string[];
     description: string;
     status: "ongoing" | "completed" | "upcoming" | "cancelled";
     currentEpisode: number;
