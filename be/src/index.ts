@@ -1,12 +1,10 @@
 import "dotenv/config.js";
-import express, { Request, Response } from 'express';
+import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import commonHeader from './middlewares/commonHeader.js';
 
-import routes from './routes';
-
-import { DBCategory } from './utils/database.js';
+import filmRouter from './routes/film.js';
 
 
 // Options
@@ -25,15 +23,17 @@ app.use(morgan("dev"), cors(corsOptions), commonHeader);
 
 
 // Routes
-app.use(routes);
+app.use("/film", filmRouter);
 
-app.get('/', async (req: Request, res: Response) => {
-    const result = await DBCategory.insertOne({
-        slug: "hanh-dong",
-        name: "Hành động",
+app.get('/', async (req, res) => {
+    res.send("No!");
+});
+
+// 404 route
+app.use((req, res, next) => {
+    res.status(404).json({
+        error: "Not found",
     });
-    
-    res.send(result);
 });
 
 
