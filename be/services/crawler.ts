@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 
-import { DBFilm } from "../src/utils/database.js"
+import { DBCategory, DBFilm } from "../src/utils/database.js"
+import { exit } from "process";
 
 
 type OPhimMain = {
@@ -90,6 +91,7 @@ const ophim1 = async () => {
 
     // Mark as finished crawling
     let done = false;
+    const allCategories = await DBCategory.find({}).toArray();
 
     for (let i = 1; i <= 8 && done === false; i++) {
         let data = await fetch(`https://ophim1.com/danh-sach/phim-moi-cap-nhat?page=${i}`);
@@ -106,26 +108,39 @@ const ophim1 = async () => {
                 const episode_total = parseInt(film.movie.episode_total);
                 const totalEpisode = Number.isNaN(episode_total) ? Infinity : parseInt(film.movie.episode_total);
                 const currentEpisode = film.movie.episode_current.match(/Full|Hoàn tất/i) === null ? parseInt(film.movie.episode_current.split("Tập ")[1]) : totalEpisode;
+                const categories: string[] = [];
+                let hasSciFi = false;
+
+                film.movie.category.forEach((category) => {
+                    // If has sci-fi category, don't add khoa hoc or vien tuong
+                    if ((category.name.toUpperCase() === "KHOA HỌC" || category.name.toUpperCase() === "VIỄN TƯỞNG") && hasSciFi) return;
+
+                    const match = allCategories.find((cat) => cat.name.toUpperCase().includes(category.name.toUpperCase()));
+                    if (match) {
+                        if (match.slug === "sci-fi") hasSciFi = true;
+                        categories.push(match.slug);
+                    }
+                });
 
                 const payload = {
                     status: film.movie.status === "trailer" ? "upcoming" : film.movie.status as "ongoing" | "completed" | "upcoming" | "cancelled",
                     totalEpisode,
                     currentEpisode,
+                    categories,
                 }
-                
+
                 // Find the film in the database
                 const match = await DBFilm.findOne({ slug: film.movie.slug });
 
                 console.log("Crawled film", film.movie.slug);
                 console.log("New", !match);
-                
+
                 // Check if film already exists, if not insert it
                 if (!match) {
                     await DBFilm.insertOne({
                         slug: film.movie.slug,
                         name: film.movie.name,
                         originName: film.movie.origin_name,
-                        categories: [],
                         description: film.movie.content,
                         createdAt: new Date(film.movie.created.time).getTime(),
                         updatedAt: new Date(film.movie.modified.time).getTime(),
@@ -181,10 +196,9 @@ const ophim1 = async () => {
                 done = true;
                 break;
             }
-
         }
-        if (done) break;
     }
 };
 
 ophim1();
+
