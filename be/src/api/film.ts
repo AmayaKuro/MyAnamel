@@ -37,20 +37,13 @@ const specificFilm = async (req: Request, res: Response, next: NextFunction) => 
         const film = await DBFilm.aggregate(pipeline).toArray();
 
         // If film not found, return 400
-        if (!film) {
+        if (!film[0]) {
             return res.status(400).json({
                 error: "Film not found",
             });
         }
 
-        const categories = await DBCategory.find({ slug: { $in: film[0].categories } }).toArray();
-
-        const payload = {
-            ...film,
-            categories,
-        };
-
-        res.status(200).json(payload);
+        res.status(200).json(film[0]);
     }
 };
 
