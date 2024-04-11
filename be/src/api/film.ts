@@ -8,9 +8,23 @@ const add = (req: Request, res: Response) => {
 };
 
 const listFilm = async (req: Request, res: Response, next: NextFunction) => {
-    const result = await DBFilm.find({}).limit(20).toArray();
+    let pipeline = [
+        {
+            $limit: 10,
+        },
+        {
+            $lookup: {
+                from: "categories",
+                localField: "categories",
+                foreignField: "slug",
+                as: "categories",
+            },
+        },
+    ];
 
-    res.send(result);
+    const films = await DBFilm.aggregate(pipeline).toArray();
+
+    res.status(200).send(films);
 }
 
 const specificFilm = async (req: Request, res: Response, next: NextFunction) => {
