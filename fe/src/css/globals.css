@@ -12,7 +12,7 @@ body {
 
 body {
   color: var(--mui-palette-text-primary);
-  background-color: var(--mui-palette-background-default)
+  background-color: var(--mui-palette-background-default);
 }
 
 @media (prefers-color-scheme: dark) {

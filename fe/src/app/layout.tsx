@@ -5,7 +5,7 @@ import { Theme } from "@utils/providers/framework";
 import Alert from "@utils/providers/alert";
 import Navbar from "@components/navbar";
 
-import "./globals.css";
+import "@css/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
