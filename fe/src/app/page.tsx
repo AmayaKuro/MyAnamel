@@ -1,18 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
-import { useAlert } from "@/utils/providers/alert";
+import { useAlert } from "@utils/providers/alert";
+import Banner from "@components/main/Banner";
+
+import styles from "@css/main/Home.module.css";
 
 
 const Home: React.FC = () => {
-  const { dispatch: { setAlertMessage, setSeverity} } = useAlert();
+  const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
 
-  setAlertMessage("Hello");
+  useEffect(() => {
+    setAlertMessage("Hello");
+    setSeverity("info");
+  }, []);
 
   return (
-    <div>
-      <h1>NOT NOW</h1>
+    <div className={styles.main}>
+        <Banner />
+      <p>Fill this in the bottom</p>
     </div>
   );
 }
