@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 
 import { useAlert } from "@utils/providers/alert";
 import Banner from "@components/main/Banner";
-import Section from "@components/main/Section";
+import Slider from "@/components/main/Slider";
 
 import styles from "@css/main/Home.module.css";
 
@@ -21,7 +21,9 @@ const Home: React.FC = () => {
     <div className={styles.main}>
       <Banner />
       <h2 style={{ textAlign: "center" }}>Maybe for categories display</h2>
-      <Section />
+      <Slider />
+      <h2 style={{ textAlign: "center" }}>Or list just a bunch of things</h2>
+
     </div>
   );
 }

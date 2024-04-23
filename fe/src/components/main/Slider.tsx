@@ -8,10 +8,10 @@ import { Carousel } from "react-responsive-carousel";
 import { BACKEND_URL } from "@utils/env";
 import { useAlert } from "@utils/providers/alert";
 
-import styles from "@css/main/Section.module.css";
+import styles from "@css/main/Slider.module.css";
 
 
-type SectionFilmDisplay = {
+type SliderFilmDisplay = {
     slug: string;
     name: string;
     originName: string;
@@ -36,7 +36,7 @@ const Section: React.FC = () => {
     const router = useRouter();
     const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
 
-    const [films, setFilms] = useState<SectionFilmDisplay[]>([]);
+    const [films, setFilms] = useState<SliderFilmDisplay[]>([]);
 
     // Hide the switch button when the mouse is not hovering over the banner
     const [isHovered, setIsHovered] = useState(false);
@@ -45,7 +45,7 @@ const Section: React.FC = () => {
     useEffect(() => {
         fetch(`${BACKEND_URL}/film/`)
             .then((res) => res.json())
-            .then((films: SectionFilmDisplay[]) => {
+            .then((films: SliderFilmDisplay[]) => {
                 setFilms(films);
             }).catch((err) => {
                 setAlertMessage("Failed to fetch films! " + "Reason: " + err.message);
