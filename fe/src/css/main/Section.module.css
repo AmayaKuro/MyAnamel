@@ -31,11 +31,13 @@
     height: 325px;
 }
 
-.filmContainer img {
+.filmContainer {
     border-radius: 2rem;
     transition: 0.3s ease-in-out;
+    overflow: hidden;
+    cursor: pointer;
 }
 
-.selectedFilm img {
+.selectedFilm {
     transform: scale(1.2);
 }
