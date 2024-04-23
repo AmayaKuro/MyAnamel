@@ -35,9 +35,9 @@
     border-radius: 2rem;
     transition: 0.3s ease-in-out;
     overflow: hidden;
-    cursor: pointer;
 }
 
 .selectedFilm {
     transform: scale(1.2);
+    cursor: pointer;
 }
