@@ -32,7 +32,7 @@ export const Theme = ({ children }: {
           },
           background: {
             default: '#040404',
-            paper: '#060606',
+            paper: 'rgba(255, 255, 255, 0.05)',
           },
         },
       },
