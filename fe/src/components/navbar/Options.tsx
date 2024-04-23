@@ -11,18 +11,25 @@ import styles from "@css/navbar/Options.module.css";
 
 
 const Options: React.FC = () => {
-    const [isLogged, setIsLogged] = useState(true);
+    const [isLogged, setIsLogged] = useState(false);
 
     return (
         <>
-            <IconButton title="More" size="large" children={<MoreHorizIcon fontSize="large" />} />
+            <IconButton title="More" size="large" children={<MoreHorizIcon fontSize="medium" />} />
             {isLogged
-                ? <IconButton title="Account" size="medium" children={<AccountCircleIcon fontSize="large" />} />
-                : <Link href="/login">
+                ? <IconButton
+                    title="Account"
+                    size="medium"
+                    children={<AccountCircleIcon fontSize="medium" />}
+                    onClick={() => setIsLogged(false)}
+                />
+                : <Link href="/login" onClick={(e) => {
+                    e.preventDefault();
+                    setIsLogged(true);
+                }}>
                     <Button variant="contained" color="primary">Login</Button>
                 </Link>
             }
-
         </>
     );
 };
