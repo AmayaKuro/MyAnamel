@@ -82,7 +82,7 @@ const Section: React.FC = () => {
                 {
                     films.map((film, index) => {
                         return (
-                            <div key={film.slug} className={styles.filmWrapper + (selectedFilmIndex === index ? " " + styles.selectedFilm : "")}>
+                            <div key={film.slug} className={styles.film + (selectedFilmIndex === index ? " " + styles.selected : "")}>
                                 <Image src={film.thumbnail} alt={film.name} fill />
                                 <p className="legend">{film.name}</p>
                             </div>

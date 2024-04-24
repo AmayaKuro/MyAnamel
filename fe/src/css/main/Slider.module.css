@@ -20,7 +20,7 @@
 }
 
 
-.filmWrapper {
+.film {
     display: block;
     position: relative;
     padding-inline: 3%;
@@ -31,7 +31,7 @@
     overflow: hidden;
 }
 
-.selectedFilm {
+.selected {
     transform: scale(1.2);
     cursor: pointer;
 }
