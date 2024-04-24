@@ -19,6 +19,7 @@ body {
   position: relative;
   overflow: hidden;
   background-color: var(--mui-palette-background-paper);
+  border-radius: 2rem;
 }
 
 @media (prefers-color-scheme: dark) {

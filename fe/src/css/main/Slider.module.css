@@ -26,9 +26,6 @@
     padding-inline: 3%;
     margin-inline: 1rem;
     height: 325px;
-}
-
-.filmContainer {
     border-radius: 2rem;
     transition: 0.3s ease-in-out;
     overflow: hidden;
