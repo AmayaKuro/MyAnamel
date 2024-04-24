@@ -65,7 +65,7 @@ const Banner: React.FC = () => {
 
     return (
         <div
-            className={styles.bannerContainer}
+            className={"container " + styles.container}
             onMouseOver={() => setIsHovered(true)}
             onMouseOut={() => setIsHovered(false)}
         >
@@ -73,7 +73,7 @@ const Banner: React.FC = () => {
                 autoPlay
                 infiniteLoop
                 interval={5000}
-                // stopOnHover
+                stopOnHover
                 swipeScrollTolerance={30}
                 showThumbs={false}
                 showStatus={false}

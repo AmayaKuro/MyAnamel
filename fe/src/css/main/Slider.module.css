@@ -1,29 +1,26 @@
-.sectionContainer :global(.carousel-root) {
+.container :global(.carousel-root) {
     height: 100%;
 }
 
-.sectionContainer :global(.slider-wrapper),
-.sectionContainer :global(.carousel-slider) {
+.container :global(.slider-wrapper),
+.container :global(.carousel-slider) {
     padding: 2rem;
     height: 100%;
     overflow-x: hidden;
 }
 
-.sectionContainer :global(.carousel-slider)>ul {
+.container :global(.carousel-slider)>ul {
     margin-top: 1rem;
 }
 
 
-.sectionContainer {
-    position: relative;
+.container {
     width: 100%;
-    border-radius: 2rem;
-    background-color: var(--mui-palette-background-paper);
     height: 475px;
 }
 
 
-.filmContainer {
+.filmWrapper {
     display: block;
     position: relative;
     padding-inline: 3%;

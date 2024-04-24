@@ -1,11 +1,7 @@
-.bannerContainer {
-    position: relative;
+.container {
     width: 100%;
     height: 625px;
     padding: 2rem;
-    border-radius: 2rem;
-    overflow: hidden;
-    background-color: var(--mui-palette-background-paper);
 }
 
 .rightArrow {
