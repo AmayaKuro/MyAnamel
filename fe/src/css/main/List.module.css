@@ -1,0 +1,45 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 215px);
+    grid-gap: 1rem;
+    justify-content: space-between;
+    width: 100%;
+    padding: 2rem;
+}
+
+.container::after {
+    content: "";
+    flex: auto;
+}
+
+.film {
+    position: relative;
+    width: 215px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.film img {
+    border-radius: 1rem;
+}
+
+.attributes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 0.5rem;
+}
+
+.name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    text-align: center;
+}
+
+.view {
+    color: var(--mui-palette-text-secondary);
+    text-align: center;
+    font-size: 0.9em;
+}
