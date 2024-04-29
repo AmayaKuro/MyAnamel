@@ -9,7 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import SearchBar from "./SearchBar";
 import Options from "./Options";
 
-import styles from "@css/navbar/Navbar.module.css";
+import styles from "@css/component/navbar/Navbar.module.css";
 
 
 const Navbar: React.FC = () => {

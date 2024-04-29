@@ -8,7 +8,7 @@ import { Carousel } from "react-responsive-carousel";
 import { BACKEND_URL } from "@utils/env";
 import { useAlert } from "@utils/providers/alert";
 
-import styles from "@css/main/Slider.module.css";
+import styles from "@css/component/main/Slider.module.css";
 
 
 type SliderFilmDisplay = {

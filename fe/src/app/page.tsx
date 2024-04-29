@@ -7,7 +7,7 @@ import Banner from "@components/main/Banner";
 import Slider from "@components/main/Slider";
 import List from "@components/main/List";
 
-import styles from "@css/main/Home.module.css";
+import styles from "@css/app/Home.module.css";
 
 
 const Home: React.FC = () => {

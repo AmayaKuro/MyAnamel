@@ -7,7 +7,7 @@ import Link from "next/link";
 import { BACKEND_URL } from "@utils/env";
 import { useAlert } from "@utils/providers/alert";
 
-import styles from "@css/main/List.module.css";
+import styles from "@css/component/main/List.module.css";
 
 
 type ListFilmDisplay = {

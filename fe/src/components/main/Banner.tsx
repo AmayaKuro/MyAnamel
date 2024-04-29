@@ -21,7 +21,7 @@ import { BACKEND_URL } from "@utils/env";
 import { useAlert } from "@utils/providers/alert";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import styles from "@css/main/Banner.module.css";
+import styles from "@css/component/main/Banner.module.css";
 
 
 type BannerFilmDisplay = {

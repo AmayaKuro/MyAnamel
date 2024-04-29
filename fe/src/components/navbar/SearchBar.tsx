@@ -6,7 +6,7 @@ import Input from '@mui/material/Input';
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from '@mui/icons-material/Search';
 
-import styles from "@css/navbar/SearchBar.module.css";
+import styles from "@css/component/navbar/SearchBar.module.css";
 
 
 type RecommendationProps = {
