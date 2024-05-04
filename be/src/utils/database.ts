@@ -36,6 +36,7 @@ const DBFilm = DB.collection<{
         serverName: string;
         data: {
             slug: string;
+            name: string;
             m3u8Link: string;
         }[]
     }[]

@@ -156,6 +156,7 @@ const ophim1 = async () => {
                             serverName: episode.server_name,
                             data: episode.server_data.map((data) => ({
                                 slug: data.slug,
+                                name: data.name,
                                 m3u8Link: data.link_m3u8,
                             })),
                         })),
@@ -176,6 +177,7 @@ const ophim1 = async () => {
                                     serverName: episode.server_name,
                                     data: episode.server_data.map((data) => ({
                                         slug: data.slug,
+                                        name: data.name,
                                         m3u8Link: data.link_m3u8,
                                     })),
                                 })),
