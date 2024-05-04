@@ -14,6 +14,11 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
+                hostname: '*.ytimg.com',
+                port: '',
+            },
+            {
+                protocol: 'https',
                 hostname: '*.amayakuro.id.vn',
                 port: '',
             },

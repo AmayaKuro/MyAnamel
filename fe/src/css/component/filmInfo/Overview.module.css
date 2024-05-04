@@ -1,0 +1,57 @@
+.container {
+    width: 100%;
+}
+
+.poster {
+    background-color: var(--mui-palette-background-default);
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.info {
+    display: flex;
+    padding-inline: 3rem;
+    padding-bottom: 2rem;
+    width: 100%;
+}
+
+.left {
+    position: relative;
+    background-color: var(--mui-palette-background-default);
+    height: 250px;
+    min-width: 215px;
+    margin-right: 2rem;
+}
+
+.left img {
+    position: absolute;
+    bottom: 0;
+    border: 2px solid var(--mui-palette-background-paper);
+    border-radius: 2rem;
+    width: 215px;
+}
+
+.right {
+    width: 100%;
+}
+
+.originName {
+    color: var(--mui-palette-text-secondary);
+    font-size: small;
+    margin-bottom: 1rem;
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.stats p {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 0.5rem;
+}
