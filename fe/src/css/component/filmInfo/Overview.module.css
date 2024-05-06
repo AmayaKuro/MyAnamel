@@ -23,6 +23,7 @@
     height: 250px;
     min-width: 215px;
     margin-right: 2rem;
+    border-radius: 2rem;
 }
 
 .left img {
