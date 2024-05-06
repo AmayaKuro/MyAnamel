@@ -93,9 +93,14 @@ const Overview: React.FC<{ film: FilmProps }> = ({ film }) => {
                             {film.currentEpisode}/{film.totalEpisode ? film.totalEpisode : "?"}
                         </p>
                     </div>
-                    <Link className={styles.link} href={`/phim/${film.slug}`}>
-                        <Button variant="contained" color="primary" startIcon={<LiveTvIcon />}>Xem ngay</Button>
-                    </Link>
+                    <Button
+                        href={film.name ? `/phim/${film.slug}/${film.episodes[0].data[0].slug}` : "#"}
+                        variant="contained"
+                        color="primary"
+                        startIcon={<LiveTvIcon />}
+                    >
+                        Xem ngay
+                    </Button>
                 </div>
             </div>
         </div>

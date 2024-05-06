@@ -11,6 +11,12 @@ import { BACKEND_URL } from '@utils/env';
 import styles from "@css/app/filmInfo.module.css";
 
 
+interface RouteParams {
+    params: {
+        slug: string;
+    }
+}
+
 interface FilmProps {
     slug: string;
     name: string;
@@ -44,7 +50,7 @@ interface FilmProps {
 }
 
 
-const FilmDetail: React.FC<{ params: { slug: string } }> = ({ params: { slug } }) => {
+const FilmDetail: React.FC<RouteParams> = ({ params: { slug } }) => {
     const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
 
     const [film, setFilm] = useState<FilmProps>({
@@ -66,9 +72,7 @@ const FilmDetail: React.FC<{ params: { slug: string } }> = ({ params: { slug } }
         rating: 0,
         year: 0,
         duration: 0,
-        episodes: [
-        ]
-
+        episodes: []
     });
 
 
