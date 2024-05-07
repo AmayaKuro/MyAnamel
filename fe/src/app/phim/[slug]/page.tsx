@@ -5,8 +5,10 @@ import { useParams } from 'next/navigation';
 
 import Overview from '@/components/filmInfo/Overview';
 import Details from '@/components/filmInfo/Details';
+
 import { useAlert } from '@utils/providers/alert';
 import { BACKEND_URL } from '@utils/env';
+import type { FilmProps } from '@utils/types';
 
 import styles from "@css/app/filmInfo.module.css";
 
@@ -15,38 +17,6 @@ interface RouteParams {
     params: {
         slug: string;
     }
-}
-
-interface FilmProps {
-    slug: string;
-    name: string;
-    originName: string;
-    categories: {
-        slug: string;
-        name: string;
-    }[];
-    description: string;
-    status: "ongoing" | "completed" | "upcoming" | "cancelled";
-    currentEpisode: number;
-    createdAt: number;
-    updatedAt: number;
-    totalEpisode: number;
-    thumbnail: string;
-    poster: string;
-    trailer: string;
-    subLang: string;
-    views: number;
-    rating: number;
-    year: number;
-    duration: number;
-    episodes: {
-        serverName: string;
-        data: {
-            slug: string;
-            name: string;
-            m3u8Link: string;
-        }[]
-    }[]
 }
 
 

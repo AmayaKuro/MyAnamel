@@ -2,10 +2,11 @@
 
 import React, { useEffect } from "react";
 
-import { useAlert } from "@utils/providers/alert";
 import Banner from "@components/main/Banner";
 import Slider from "@components/main/Slider";
 import List from "@components/main/List";
+
+import { useAlert } from "@utils/providers/alert";
 
 import styles from "@css/app/Home.module.css";
 

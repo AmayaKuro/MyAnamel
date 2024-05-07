@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+
 import Image from 'next/image';
 import Button from "@mui/material/Button";
 import LiveTvIcon from '@mui/icons-material/LiveTv';
@@ -12,45 +12,18 @@ import StarIcon from '@mui/icons-material/Star';
 import ListIcon from '@mui/icons-material/List';
 import BrowseGalleryIcon from '@mui/icons-material/BrowseGallery';
 
+import type { FilmProps } from '@utils/types';
 import { useAlert } from '@utils/providers/alert';
 
 import styles from "@css/component/filmInfo/Overview.module.css";
 
 
-interface FilmProps {
-    slug: string;
-    name: string;
-    originName: string;
-    categories: {
-        slug: string;
-        name: string;
-    }[];
-    description: string;
-    status: "ongoing" | "completed" | "upcoming" | "cancelled";
-    currentEpisode: number;
-    createdAt: number;
-    updatedAt: number;
-    totalEpisode: number;
-    thumbnail: string;
-    poster: string;
-    trailer: string;
-    subLang: string;
-    views: number;
-    rating: number;
-    year: number;
-    duration: number;
-    episodes: {
-        serverName: string;
-        data: {
-            slug: string;
-            name: string;
-            m3u8Link: string;
-        }[]
-    }[]
+interface ComponentProps {
+    film: FilmProps;
 }
 
 
-const Overview: React.FC<{ film: FilmProps }> = ({ film }) => {
+const Overview: React.FC<ComponentProps> = ({ film }) => {
     const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
 
     const [rating, setRating] = useState(film.rating);

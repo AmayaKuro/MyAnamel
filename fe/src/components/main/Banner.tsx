@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+
 import Link from "next/link";
 import Image from "next/image";
 import Button from "@mui/material/Button";
@@ -17,6 +18,7 @@ import BrowseGalleryIcon from '@mui/icons-material/BrowseGallery';
 import DnsIcon from '@mui/icons-material/Dns';
 import { Carousel } from "react-responsive-carousel";
 
+import { ExtendedFilmDisplayProps } from "@utils/types";
 import { BACKEND_URL } from "@utils/env";
 import { useAlert } from "@utils/providers/alert";
 
@@ -24,30 +26,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import styles from "@css/component/main/Banner.module.css";
 
 
-type BannerFilmDisplay = {
-    slug: string;
-    name: string;
-    originName: string;
-    description: string;
-    status: "ongoing" | "completed" | "upcoming" | "cancelled";
-    categories: {
-        slug: string;
-        name: string;
-    }[];
-    currentEpisode: number;
-    totalEpisode: number;
-    thumbnail: string;
-    poster: string;
-    subLang: string;
-    views: number;
-    rating: number;
-    year: number;
-    duration: number;
-}
-
-
 const Banner: React.FC = () => {
-    const [films, setFilms] = useState<BannerFilmDisplay[]>([]);
+    const [films, setFilms] = useState<ExtendedFilmDisplayProps[]>([]);
     const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
     // Hide the switch button when the mouse is not hovering over the banner
     const [isHovered, setIsHovered] = useState(false);
@@ -55,7 +35,7 @@ const Banner: React.FC = () => {
     useEffect(() => {
         fetch(`${BACKEND_URL}/film/`)
             .then((res) => res.json())
-            .then((films: BannerFilmDisplay[]) => {
+            .then((films: ExtendedFilmDisplayProps[]) => {
                 setFilms(films);
             }).catch((err) => {
                 setAlertMessage("Failed to fetch films! " + "Reason: " + err.message);

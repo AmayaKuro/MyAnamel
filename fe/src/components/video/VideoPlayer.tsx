@@ -1,11 +1,12 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+
 import Head from "next/head";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
 
-import styles from "@css/video/VideoPlayer.module.css";
+import styles from "@css/component/video/VideoPlayer.module.css";
 
 interface VideoProps {
   manifest: string;
