@@ -63,4 +63,9 @@ interface currentEpisodeProps {
     episodeIndex: number;
 }
 
-export type { FilmProps, FilmDisplayProps, ExtendedFilmDisplayProps, currentEpisodeProps };
+interface ErrorResponse {
+    message?: string;
+    statusCode?: number;
+}
+
+export type { FilmProps, FilmDisplayProps, ExtendedFilmDisplayProps, currentEpisodeProps, ErrorResponse }; 
