@@ -52,8 +52,9 @@ const specificFilm = async (req: Request, res: Response, next: NextFunction) => 
 
         // If film not found, return 400
         if (!film[0]) {
-            return res.status(400).json({
-                error: "Film not found",
+           return next({
+                statusCode: 400,
+                message: "Film not found",
             });
         }
 

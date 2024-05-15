@@ -2,7 +2,8 @@ import "dotenv/config.js";
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import commonHeader from './middlewares/commonHeader.js';
+
+import { commonHeader, errorHandler } from './utils/middlewares.js';
 
 import filmRouter from './routes/film.js';
 
@@ -31,11 +32,13 @@ app.get('/', async (req, res) => {
 
 // 404 route
 app.use((req, res, next) => {
-    res.status(404).json({
-        error: "Not found",
+    return next({
+        statusCode: 404,
+        message: "Not found",
     });
 });
 
+app.use(errorHandler);
 
 app.listen(port, () => {
     // convertVideo("public\\videos\\full\\2024-02-14 21-26-20.mp4", "public\\videos\\transcoded\\folder\\playlist.m3u8", "public\\videos\\transcoded\\folder\\segment%03d.ts")
