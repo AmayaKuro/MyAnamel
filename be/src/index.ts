@@ -40,6 +40,7 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
+
 app.listen(port, () => {
     // convertVideo("public\\videos\\full\\2024-02-14 21-26-20.mp4", "public\\videos\\transcoded\\folder\\playlist.m3u8", "public\\videos\\transcoded\\folder\\segment%03d.ts")
     console.log(`Server is running on port ${port}`);

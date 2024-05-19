@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 
 import { DBCategory, DBFilm } from "../src/utils/database.js"
-import { exit } from "process";
 
 
 type OPhimMain = {
