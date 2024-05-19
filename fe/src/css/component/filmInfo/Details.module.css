@@ -22,13 +22,16 @@
 .episodes {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    /* flex-wrap: wrap; */
-    /* justify-content: space-around; */
     width: 100%;
     margin-top: 1rem;
 }
 
 .episodes a {
-    background-color: var(--mui-palette-background-paper);
     margin: 0.5rem;
+    background-color: var(--mui-palette-background-paper);
+}
+
+.episodes a.currentEpisode {
+    background-color: var(--mui-palette-primary-main);
+    cursor: default;
 }

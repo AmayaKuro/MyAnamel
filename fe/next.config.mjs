@@ -9,7 +9,7 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: 'img.ophim14.cc',
+                hostname: '*.ophim*',
                 port: '',
             },
             {

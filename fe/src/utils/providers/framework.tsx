@@ -27,8 +27,8 @@ export const Theme = ({ children }: {
           },
           text: {
             primary: '#ffffff',
-            secondary: `rgba(255, 255, 255, 0.5)`,
-            disabled: `rgba(255, 255, 255, 0.3)`,
+            secondary: `rgba(255, 255, 255, 0.6)`,
+            disabled: `rgba(255, 255, 255, 0.4)`,
           },
           background: {
             default: '#040404',

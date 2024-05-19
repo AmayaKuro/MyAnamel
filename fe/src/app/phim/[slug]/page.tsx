@@ -8,7 +8,7 @@ import Details from '@/components/filmInfo/Details';
 
 import { useAlert } from '@utils/providers/alert';
 import { BACKEND_URL } from '@utils/env';
-import type { FilmProps } from '@utils/types';
+import type { FilmProps, ErrorResponse } from '@utils/types';
 
 import styles from "@css/app/filmInfo.module.css";
 
@@ -26,7 +26,7 @@ const FilmDetail: React.FC<RouteParams> = ({ params: { slug } }) => {
     const [film, setFilm] = useState<FilmProps>({
         slug: "",
         name: "",
-        originName: "",
+        originName: "Never Gonna Give You Up",
         categories: [],
         description: "",
         status: "ongoing",
@@ -44,18 +44,28 @@ const FilmDetail: React.FC<RouteParams> = ({ params: { slug } }) => {
         duration: 0,
         episodes: []
     });
+    const [error, setError] = useState<ErrorResponse | null>(null);
 
 
     useEffect(() => {
         fetch(`${BACKEND_URL}/film/${slug}`)
             .then((res) => res.json())
-            .then((films: FilmProps) => {
-                setFilm(films);
+            .then((data: FilmProps & ErrorResponse) => {
+                if (data.message) {
+                    setError(data);
+                } else {
+                    setFilm(data);
+                }
             }).catch((err) => {
-                setAlertMessage("Failed to fetch films! " + "Reason: " + err.message);
-                setSeverity("error");
+                setError(err);
             });
     }, []);
+
+    useEffect(() => {
+        if (!error) return;
+
+        throw error;
+    }, [error]);
 
 
     return (

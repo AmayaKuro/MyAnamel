@@ -8,7 +8,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
 import DnsIcon from '@mui/icons-material/Dns';
-import Button  from '@mui/material/Button';
+import Button from '@mui/material/Button';
 
 import type { FilmProps, currentEpisodeProps } from '@utils/types';
 
@@ -21,7 +21,7 @@ interface ComponentProps {
 }
 
 
-const FilmDetail: React.FC<ComponentProps> = ({ film }) => {
+const FilmDetail: React.FC<ComponentProps> = ({ film, currentEpisode }) => {
     const [tabValue, setTabValue] = React.useState("episodes");
 
     return (
@@ -38,14 +38,22 @@ const FilmDetail: React.FC<ComponentProps> = ({ film }) => {
                 </TabList>
 
                 <TabPanel className={styles.episodeContainer} value="episodes">
-                    {film.episodes.map((server) => {
+                    {film.episodes.map((server, serverIndex) => {
                         return (
                             <div key={server.serverName}>
                                 <h3>{server.serverName}</h3>
                                 <div className={styles.episodes} >
-                                    {server.data.map((episode, index) => {
+                                    {server.data.map((episode, episodeIndex) => {
                                         return (
-                                            <Button href={`/phim/${film.slug}/${episode.slug}`} key={"episode" + index}>
+                                            <Button
+                                                key={"episode" + episodeIndex}
+                                                // If the episode is the current episode, set the variant to "contained" and remove redirect link.
+                                                {
+                                                ...(episodeIndex === currentEpisode?.episodeIndex && serverIndex === currentEpisode.serverIndex)
+                                                    ? { variant: "contained", className: styles.currentEpisode, href: "#" }
+                                                    : { variant: "text", href: `/phim/${film.slug}/${episode.slug}` }
+                                                }
+                                            >
                                                 {episode.name ? episode.name : episode.slug}
                                             </Button>
                                         );
@@ -71,8 +79,8 @@ const FilmDetail: React.FC<ComponentProps> = ({ film }) => {
                         })
                     }
                 </TabPanel>
-            </div>
-        </TabContext>
+            </div >
+        </TabContext >
     );
 };
 
