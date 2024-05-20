@@ -134,7 +134,7 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
                         return (
                             <div key={film.slug} className={styles.film}>
                                 <Link href={`/phim/${film.slug}`} >
-                                    <Image src={film.poster} alt="" width={168} height={94} loading="lazy" />
+                                    <Image src={film.poster} alt="" width={188} height={107} loading="lazy" />
                                 </Link>
                                 <div className={styles.info}>
                                     <Link href={`/phim/${film.slug}`} >
