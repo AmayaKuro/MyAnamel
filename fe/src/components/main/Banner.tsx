@@ -26,22 +26,15 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import styles from "@css/component/main/Banner.module.css";
 
 
-const Banner: React.FC = () => {
-    const [films, setFilms] = useState<ExtendedFilmDisplayProps[]>([]);
-    const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
+interface ComponentProps {
+    films: ExtendedFilmDisplayProps[];
+}
+
+
+const Banner: React.FC<ComponentProps> = ({ films }) => {
     // Hide the switch button when the mouse is not hovering over the banner
     const [isHovered, setIsHovered] = useState(false);
 
-    useEffect(() => {
-        fetch(`${BACKEND_URL}/film/`)
-            .then((res) => res.json())
-            .then((films: ExtendedFilmDisplayProps[]) => {
-                setFilms(films);
-            }).catch((err) => {
-                setAlertMessage("Failed to fetch films! " + "Reason: " + err.message);
-                setSeverity("error");
-            });
-    }, []);
 
     return (
         <div
@@ -78,7 +71,7 @@ const Banner: React.FC = () => {
                         return (
                             <div className={styles.film} key={film.slug}>
                                 <Link href={`/phim/${film.slug}`}>
-                                    <Image className={styles.poster} src={film.poster} alt={film.name} width={1920} height={1080} />
+                                    <Image className={styles.poster} src={film.poster} alt={film.name} width={1920} height={1080}  />
                                 </Link>
 
                                 <div className={styles.overlay}>

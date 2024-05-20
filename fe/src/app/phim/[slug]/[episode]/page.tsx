@@ -105,7 +105,7 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
     useEffect(() => {
         if (!film.name) return;
 
-        fetch(`${BACKEND_URL}/film`)
+        fetch(`${BACKEND_URL}/film/new`)
             .then((res) => res.json())
             .then((data: FilmDisplayProps[]) => {
                 setRecommendFilms(data);
@@ -134,7 +134,7 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
                         return (
                             <div key={film.slug} className={styles.film}>
                                 <Link href={`/phim/${film.slug}`} >
-                                    <Image src={film.poster} alt="" width={168} height={94} />
+                                    <Image src={film.poster} alt="" width={168} height={94} loading="lazy" />
                                 </Link>
                                 <div className={styles.info}>
                                     <Link href={`/phim/${film.slug}`} >

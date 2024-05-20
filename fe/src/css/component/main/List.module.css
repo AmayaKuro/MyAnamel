@@ -15,12 +15,17 @@
 .film {
     position: relative;
     width: 215px;
-    overflow: hidden;
     text-decoration: none;
+    color: inherit;
+}
+
+.film:hover img {
+    transform: scale(1.08);
 }
 
 .film img {
     border-radius: 1rem;
+    transition: transform 0.3s;
 }
 
 .attributes {

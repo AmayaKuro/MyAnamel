@@ -13,26 +13,18 @@ import { useAlert } from "@utils/providers/alert";
 import styles from "@css/component/main/Slider.module.css";
 
 
-const Section: React.FC = () => {
-    const router = useRouter();
-    const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
+interface ComponentProps {
+    films: FilmDisplayProps[];
+}
 
-    const [films, setFilms] = useState<FilmDisplayProps[]>([]);
+
+const Section: React.FC<ComponentProps> = ({ films }) => {
+    const router = useRouter();
 
     // Hide the switch button when the mouse is not hovering over the banner
     const [isHovered, setIsHovered] = useState(false);
     const [selectedFilmIndex, setselectedFilmIndex] = useState(0);
 
-    useEffect(() => {
-        fetch(`${BACKEND_URL}/film/`)
-            .then((res) => res.json())
-            .then((films: FilmDisplayProps[]) => {
-                setFilms(films);
-            }).catch((err) => {
-                setAlertMessage("Failed to fetch films! " + "Reason: " + err.message);
-                setSeverity("error");
-            });
-    }, []);
 
     return (
         <div
@@ -64,7 +56,7 @@ const Section: React.FC = () => {
                     films.map((film, index) => {
                         return (
                             <div key={film.slug} className={styles.film + (selectedFilmIndex === index ? " " + styles.selected : "")}>
-                                <Image src={film.thumbnail} alt={film.name} fill />
+                                <Image src={film.thumbnail} alt={film.name} fill loading="lazy"/>
                                 <p className="legend">{film.name}</p>
                             </div>
                         );
