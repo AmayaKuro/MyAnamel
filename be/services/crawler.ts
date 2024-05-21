@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-
 import { DBCategory, DBFilm } from "../src/utils/database.js"
 
 
