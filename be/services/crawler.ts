@@ -147,6 +147,7 @@ const ophim1 = async () => {
                         subLang: film.movie.lang,
                         views: 0,
                         rating: 0,
+                        rateCount: 0,
                         year: film.movie.year,
                         duration: parseInt(film.movie.time),
                         episodes: film.episodes.map((episode) => ({

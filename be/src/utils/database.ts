@@ -30,6 +30,7 @@ const DBFilm = DB.collection<{
     subLang: string;
     views: number;
     rating: number;
+    rateCount: number;
     year: number;
     duration: number;
     episodes: {
@@ -41,6 +42,17 @@ const DBFilm = DB.collection<{
         }[]
     }[]
 }>("films");
+
+const DBFollowedFilm = DB.collection<{
+    username: string;
+    filmSlug: string;
+}>("followedFilms");
+
+const DBRatedFilm = DB.collection<{
+    username: string;
+    filmSlug: string;
+}>("ratedFilms");
+
 
 
 export { DBCategory, DBFilm };
