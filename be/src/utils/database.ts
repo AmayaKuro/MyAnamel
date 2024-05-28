@@ -21,8 +21,8 @@ const DBFilm = DB.collection<{
     description: string;
     status: "ongoing" | "completed" | "upcoming" | "cancelled";
     currentEpisode: number;
-    createdAt: number;
-    updatedAt: number;
+    createdAt: Date;
+    updatedAt: Date;
     totalEpisode: number;
     thumbnail: string;
     poster: string;

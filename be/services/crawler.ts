@@ -139,8 +139,8 @@ const ophim1 = async () => {
                         name: film.movie.name,
                         originName: film.movie.origin_name,
                         description: film.movie.content,
-                        createdAt: new Date(film.movie.created.time).getTime(),
-                        updatedAt: new Date(film.movie.modified.time).getTime(),
+                        createdAt: new Date(film.movie.created.time),
+                        updatedAt: new Date(film.movie.modified.time),
                         thumbnail: film.movie.thumb_url,
                         poster: film.movie.poster_url,
                         trailer: film.movie.trailer_url,
@@ -162,10 +162,10 @@ const ophim1 = async () => {
                     });
                 } else {
                     // Else if exist and has been updated, update the database
-                    if (match.updatedAt !== new Date(film.movie.modified.time).getTime()) {
+                    if (match.updatedAt !== new Date(film.movie.modified.time)) {
                         await DBFilm.updateOne({ slug: film.movie.slug }, {
                             $set: {
-                                updatedAt: new Date(film.movie.modified.time).getTime(),
+                                updatedAt: new Date(film.movie.modified.time),
                                 // This regex might perform poorly (delete "tất" and i flag to optimize)
                                 thumbnail: film.movie.thumb_url,
                                 poster: film.movie.poster_url,
@@ -201,4 +201,16 @@ const ophim1 = async () => {
 };
 
 ophim1();
+
+// For updating error in the database
+// function a() {
+//     DBFilm.updateMany({}, {
+//         $set: {
+//             createdAt: { 
+//                 "$toDate": "createdAt",
+//             },
+//         }
+//     });
+// }
+// a();
 
