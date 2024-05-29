@@ -1,11 +1,12 @@
 import express from "express";
-import { add, listFilm, specificFilm } from "../api/film";
+import * as api from "../api/film";
 
 
 const filmRouter = express.Router();
 
-filmRouter.get("/", listFilm);
-filmRouter.get("/:slug", specificFilm);
-
+filmRouter.get("/new", api.newFilms);
+filmRouter.get("/top", api.topFilms)
+filmRouter.get("/category/:slug", api.categoryFilm);
+filmRouter.get("/:slug", api.specificFilm);
 
 export default filmRouter;

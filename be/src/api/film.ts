@@ -1,17 +1,42 @@
 import { Request, Response, NextFunction } from "express";
 
-import { DBFilm, DBCategory } from "../utils/database";
+import { DBFilm } from "../utils/database";
+import { CURRENT_SEASON } from "../utils/env";
+
+
+const inputQuery = (req: Request) => {
+    let page = typeof req.query.page === "string" ? parseInt(req.query.page) : 1;
+    page = (page < 1 || Number.isNaN(page)) ? 1 : page;
+    let extend = req.query.extend === "true" ? true : false;
+
+    return {
+        page,
+        extend,
+    };
+}
 
 // Add after finish the whole project 
 const add = (req: Request, res: Response) => {
     res.send("Film");
 };
 
-const listFilm = async (req: Request, res: Response, next: NextFunction) => {
-    let films;
+const specificFilm = async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.params.slug) {
+        return next({
+            statusCode: 400,
+            message: "Film not found",
+        });
+    }
+
+    let film;
     let pipeline = [
         {
-            $limit: 10,
+            $match: {
+                slug: req.params.slug,
+            },
+        },
+        {
+            $limit: 1,
         },
         {
             $lookup: {
@@ -21,6 +46,111 @@ const listFilm = async (req: Request, res: Response, next: NextFunction) => {
                 as: "categories",
             },
         },
+    ];
+
+    try {
+        film = await DBFilm.aggregate(pipeline).toArray();
+    } catch (err) {
+        console.log(err);
+
+        return next({
+            statusCode: 500,
+            message: "Internal server error",
+        });
+    }
+
+    // If film not found, return 400
+    if (!film[0]) {
+        return next({
+            statusCode: 400,
+            message: "Film not found",
+        });
+    }
+
+    res.status(200).json(film[0]);
+
+};
+
+const newFilms = async (req: Request, res: Response, next: NextFunction) => {
+    const { page } = inputQuery(req);
+
+    let film;
+    let pipeline = [
+        {
+            $project: {
+                name: 1,
+                slug: 1,
+                thumbnail: 1,
+                poster: 1,
+                views: 1,
+                rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
+            },
+        },
+        {
+            $sort: {
+                updatedAt: -1,
+            },
+        },
+        {
+            $skip: (page - 1) * 12,
+        },
+        {
+            $limit: 12,
+        },
+    ];
+
+    try {
+        film = await DBFilm.aggregate(pipeline).toArray();
+    } catch (err) {
+        console.log(err);
+
+        return next({
+            statusCode: 500,
+            message: "Internal server error",
+        });
+    }
+
+    res.status(200).send(film);
+}
+
+const categoryFilm = async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.params.slug) {
+        return next({
+            statusCode: 400,
+            message: "Film not found",
+        });
+    }
+
+    const { page } = inputQuery(req);
+
+    let films;
+    let pipeline = [
+        {
+            $project: {
+                name: 1,
+                slug: 1,
+                thumbnail: 1,
+                poster: 1,
+                views: 1,
+                rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
+            },
+        },
+        {
+            $match: {
+                categories: req.params.slug,
+            },
+        },
+        {
+            $sort: {
+                updatedAt: -1,
+            },
+        },
+        {
+            $skip: (page - 1) * 12,
+        },
+        {
+            $limit: 12,
+        }
     ];
 
     try {
@@ -37,18 +167,70 @@ const listFilm = async (req: Request, res: Response, next: NextFunction) => {
     res.status(200).send(films);
 }
 
-const specificFilm = async (req: Request, res: Response, next: NextFunction) => {
-    if (req.params.slug) {
-        let film;
-        let pipeline = [
-            {
-                $match: {
-                    slug: req.params.slug,
-                },
+const topFilms = async (req: Request, res: Response, next: NextFunction) => {
+    const { page, extend } = inputQuery(req);
+
+    let films;
+    let pipeline = [
+        {
+            $addFields: {
+                season: { $ceil: { $divide: [{ $month: "$updatedAt" }, 3] } },
             },
-            {
-                $limit: 1,
+        },
+        {
+            $match: {
+                ...(CURRENT_SEASON === 1
+                    ? {
+                        // If current season is 1, then get season 1 and 4
+                        season: { $in: [1, 4] },
+                    } : {
+                        // else get current season and pervious season
+                        season: {
+                            $gte: CURRENT_SEASON - 1,
+                            $lte: CURRENT_SEASON,
+                        },
+                    }),
+            }
+        },
+        {
+            $sort: {
+                // If current season is 1, then the higher year first, else higher season first
+                ...(
+                    CURRENT_SEASON === 1
+                        ? { year: -1 }
+                        : { session: -1 }
+                ),
+                views: -1,
+                rating: -1,
+                updatedAt: -1,
             },
+        },
+        {
+            $skip: (page - 1) * 12,
+        },
+        {
+            $limit: 12,
+        },
+        {
+            $project: {
+                name: 1,
+                slug: 1,
+                thumbnail: 1,
+                poster: 1,
+                views: 1,
+                rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
+                ...(extend ? {
+                    categories: 1,
+                    originName: 1,
+                    description: 1,
+                    currentEpisode: 1,
+                    totalEpisode: 1,
+                    year: 1,
+                    duration: 1,
+                } : {})
+            },
+        },
+        ...(extend ? [
             {
                 $lookup: {
                     from: "categories",
@@ -57,37 +239,23 @@ const specificFilm = async (req: Request, res: Response, next: NextFunction) => 
                     as: "categories",
                 },
             },
-        ];
+        ] : [])
+    ];
 
-        try {
-            film = await DBFilm.aggregate(pipeline).toArray();
-        } catch (err) {
-            console.log(err);
+    try {
+        films = await DBFilm.aggregate(pipeline).toArray();
+    } catch (err) {
+        console.log(err);
 
-            return next({
-                statusCode: 500,
-                message: "Internal server error",
-            });
-        }
-
-        // If film not found, return 400
-        if (!film[0]) {
-            return next({
-                statusCode: 400,
-                message: "Film not found",
-            });
-        }
-
-        res.status(200).json(film[0]);
-    }
-    else {
-        next({
-            statusCode: 400,
-            message: "Film not found",
+        return next({
+            statusCode: 500,
+            message: "Internal server error",
         });
     }
-};
+
+    res.status(200).send(films);
+}
 
 
-export { add, listFilm, specificFilm };
+export { add, specificFilm, newFilms, topFilms, categoryFilm };
 
