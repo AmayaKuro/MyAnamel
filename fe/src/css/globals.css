@@ -13,8 +13,6 @@ body {
 body {
   color: var(--mui-palette-text-primary);
   background-color: var(--mui-palette-background-default);
-  /* min-height: 100vh; */
-  height: 100vh;
 }
 
 .container {

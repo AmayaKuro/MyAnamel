@@ -16,7 +16,9 @@ import styles from "@css/app/Home.module.css";
 const Home: React.FC = () => {
   const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
 
-  const [films, setFilms] = useState<ExtendedFilmDisplayProps[]>([]);
+  const [bannerFilms, setBannerFilms] = useState<ExtendedFilmDisplayProps[]>([]);
+  // Films for the slider and list
+  const [listFilms, setListFilms] = useState<ExtendedFilmDisplayProps[]>([]);
   const [error, setError] = useState<ErrorResponse | null>(null);
 
   useEffect(() => {
@@ -25,10 +27,19 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    fetch(`${BACKEND_URL}/film/top?extend=true`)
+      .then((res) => res.json())
+      .then((films: ExtendedFilmDisplayProps[]) => {
+        setBannerFilms(films);
+      }).catch((err) => {
+        setAlertMessage("Failed to fetch films! " + "Reason: " + err.message);
+        setSeverity("error");
+      });
+
     fetch(`${BACKEND_URL}/film/new`)
       .then((res) => res.json())
       .then((films: ExtendedFilmDisplayProps[]) => {
-        setFilms(films);
+        setListFilms(films);
       }).catch((err) => {
         setAlertMessage("Failed to fetch films! " + "Reason: " + err.message);
         setSeverity("error");
@@ -38,11 +49,11 @@ const Home: React.FC = () => {
 
   return (
     <div className={styles.main}>
-      <Banner films={films} />
+      <Banner films={bannerFilms} />
       <h2 style={{ textAlign: "center" }}>Maybe for categories display</h2>
-      <Slider films={films} />
+      <Slider films={listFilms} />
       <h2 style={{ textAlign: "center" }}>Or list just a bunch of things</h2>
-      <List films={films} />
+      <List films={listFilms} />
 
     </div>
   );

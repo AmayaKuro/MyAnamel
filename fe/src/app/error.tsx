@@ -24,7 +24,7 @@ const Error: React.FC<ErrorProps> = ({ error, reset }) => {
                 <div>{error.message}</div>
             </div>
 
-            <Button href="/" startIcon={<ArrowBackIosNewIcon/>}> Go back to home page</Button>
+            <Button href="/" startIcon={<ArrowBackIosNewIcon />}> Go back to home page</Button>
         </div>
     );
 };

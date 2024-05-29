@@ -85,6 +85,9 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
                         serverIndex: i,
                         episodeIndex: y,
                     });
+
+                    // Send viewed status to BE
+                    // fetch("/api/film/viewed")
                     return false;
                 }
 
