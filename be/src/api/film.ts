@@ -77,16 +77,6 @@ const newFilms = async (req: Request, res: Response, next: NextFunction) => {
     let film;
     let pipeline = [
         {
-            $project: {
-                name: 1,
-                slug: 1,
-                thumbnail: 1,
-                poster: 1,
-                views: 1,
-                rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
-            },
-        },
-        {
             $sort: {
                 updatedAt: -1,
             },
@@ -96,6 +86,16 @@ const newFilms = async (req: Request, res: Response, next: NextFunction) => {
         },
         {
             $limit: 12,
+        },
+        {
+            $project: {
+                name: 1,
+                slug: 1,
+                thumbnail: 1,
+                poster: 1,
+                views: 1,
+                rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
+            },
         },
     ];
 
@@ -126,16 +126,6 @@ const categoryFilm = async (req: Request, res: Response, next: NextFunction) => 
     let films;
     let pipeline = [
         {
-            $project: {
-                name: 1,
-                slug: 1,
-                thumbnail: 1,
-                poster: 1,
-                views: 1,
-                rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
-            },
-        },
-        {
             $match: {
                 categories: req.params.slug,
             },
@@ -150,7 +140,17 @@ const categoryFilm = async (req: Request, res: Response, next: NextFunction) => 
         },
         {
             $limit: 12,
-        }
+        },
+        {
+            $project: {
+                name: 1,
+                slug: 1,
+                thumbnail: 1,
+                poster: 1,
+                views: 1,
+                rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
+            },
+        },
     ];
 
     try {
