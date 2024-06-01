@@ -27,7 +27,7 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/film/top?extend=true`)
+    fetch(`${BACKEND_URL}/film/popular?extend=true`)
       .then((res) => res.json())
       .then((films: ExtendedFilmDisplayProps[]) => {
         setBannerFilms(films);

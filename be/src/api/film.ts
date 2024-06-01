@@ -113,6 +113,48 @@ const newFilms = async (req: Request, res: Response, next: NextFunction) => {
     res.status(200).send(film);
 }
 
+const topFilms = async (req: Request, res: Response, next: NextFunction) => {
+    const { page } = inputQuery(req);
+
+    let film;
+    let pipeline = [
+        {
+            $sort: {
+                views: -1,
+            },
+        },
+        {
+            $skip: (page - 1) * 12,
+        },
+        {
+            $limit: 12,
+        },
+        {
+            $project: {
+                name: 1,
+                slug: 1,
+                thumbnail: 1,
+                poster: 1,
+                views: 1,
+                rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
+            },
+        },
+    ];
+
+    try {
+        film = await DBFilm.aggregate(pipeline).toArray();
+    } catch (err) {
+        console.log(err);
+
+        return next({
+            statusCode: 500,
+            message: "Internal server error",
+        });
+    }
+
+    res.status(200).send(film);
+}
+
 const categoryFilm = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.params.slug) {
         return next({
@@ -167,7 +209,7 @@ const categoryFilm = async (req: Request, res: Response, next: NextFunction) => 
     res.status(200).send(films);
 }
 
-const topFilms = async (req: Request, res: Response, next: NextFunction) => {
+const popularFilms = async (req: Request, res: Response, next: NextFunction) => {
     const { page, extend } = inputQuery(req);
 
     let films;
@@ -256,6 +298,52 @@ const topFilms = async (req: Request, res: Response, next: NextFunction) => {
     res.status(200).send(films);
 }
 
+const searchFilmName = async (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.name !== "string" || req.query.name.length < 1) {
+        return next({
+            statusCode: 400,
+            message: "Film not found",
+        });
+    }
 
-export { add, specificFilm, newFilms, topFilms, categoryFilm };
+    let films;
+    let pipeline = [
+        {
+            $match: {
+                name: {
+                    $regex: new RegExp(req.query.name, "i"),
+                },
+            },
+        },
+        {
+            $limit: 5,
+        },
+        {
+            $project: {
+                name: 1,
+                slug: 1,
+                thumbnail: 1,
+                poster: 1,
+                views: 1,
+                rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
+            },
+        },
+    ];
+
+    try {
+        films = await DBFilm.aggregate(pipeline).toArray();
+    } catch (err) {
+        console.log(err);
+
+        return next({
+            statusCode: 500,
+            message: "Internal server error",
+        });
+    }
+
+    res.status(200).send(films);
+}
+
+
+export { add, specificFilm, newFilms, topFilms, popularFilms, categoryFilm, searchFilmName };
 
