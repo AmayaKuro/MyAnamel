@@ -299,7 +299,7 @@ const popularFilms = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 const searchFilmName = async (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.name !== "string" || req.query.name.length < 1) {
+    if (typeof req.query.name !== "string" || req.query.name.length < 1) {
         return next({
             statusCode: 400,
             message: "Film not found",
@@ -310,13 +310,27 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
     let pipeline = [
         {
             $match: {
-                name: {
-                    $regex: new RegExp(req.query.name, "i"),
-                },
+                $or: [
+                    {
+                        name: {
+                            $regex: new RegExp(req.query.name, "i"),
+                        },
+                    },
+                    {
+                        originName: {
+                            $regex: new RegExp(req.query.name, "i"),
+                        },
+                    },
+                    {
+                        slug: {
+                            $regex: new RegExp(req.query.name, "i"),
+                        },
+                    }
+                ],
             },
         },
         {
-            $limit: 5,
+            $limit: 12,
         },
         {
             $project: {
@@ -326,6 +340,13 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
                 poster: 1,
                 views: 1,
                 rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
+                categories: 1,
+                originName: 1,
+                description: 1,
+                currentEpisode: 1,
+                totalEpisode: 1,
+                year: 1,
+                duration: 1,
             },
         },
     ];
