@@ -84,8 +84,6 @@ type OPhimSpecificFilm = {
 
 
 const ophim1 = async () => {
-    // dotenv.config();
-
     // Mark as finished crawling
     let done = false;
     const allCategories = await DBCategory.find({}).toArray();
@@ -93,6 +91,12 @@ const ophim1 = async () => {
     for (let i = 1; i <= 8 && done === false; i++) {
         let data = await fetch(`https://ophim1.com/danh-sach/phim-moi-cap-nhat?page=${i}`);
         const main = await data.json() as OPhimMain;
+
+        if (main.items.length === 0) {
+            console.log("Finished crawling(Out of films)");
+            done = true;
+            break;
+        }
 
         for (let item of main.items) {
             data = await fetch(`https://ophim1.com/phim/${item.slug}`);
@@ -131,6 +135,7 @@ const ophim1 = async () => {
 
                 console.log("Crawled film", film.movie.slug);
                 console.log("New", !match);
+                console.log("Will Updated", !match || match.updatedAt < new Date(film.movie.modified.time));
 
                 // Check if film already exists, if not insert it
                 if (!match) {
@@ -161,8 +166,8 @@ const ophim1 = async () => {
                         ...payload,
                     });
                 } else {
-                    // Else if exist and has been updated, update the database
-                    if (match.updatedAt !== new Date(film.movie.modified.time)) {
+                    // Else if exist and isn't up to date, update the database
+                    if (match.updatedAt < new Date(film.movie.modified.time)) {
                         await DBFilm.updateOne({ slug: film.movie.slug }, {
                             $set: {
                                 updatedAt: new Date(film.movie.modified.time),
@@ -190,12 +195,6 @@ const ophim1 = async () => {
                     }
                 }
             }
-
-            if (main.items.length === 0) {
-                console.log("Finished crawling(Out of films)");
-                done = true;
-                break;
-            }
         }
     }
 };
@@ -206,7 +205,7 @@ ophim1();
 // function a() {
 //     DBFilm.updateMany({}, {
 //         $set: {
-//             createdAt: { 
+//             createdAt: {
 //                 "$toDate": "createdAt",
 //             },
 //         }
