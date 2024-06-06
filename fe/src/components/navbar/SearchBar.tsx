@@ -52,7 +52,7 @@ const SearchBar: React.FC = () => {
                     placeholder="Type an anime's name"
                     autoComplete="true"
                     onFocus={() => setFocus(true)}
-                    onBlur={() => setFocus(false)}
+                    onBlur={e => e.relatedTarget === null && setFocus(false)}
                     onChange={(e) => {
                         if (e.currentTarget.value === "") {
                             // Reset the films list if the input is empty
@@ -65,8 +65,13 @@ const SearchBar: React.FC = () => {
                         // Send the message if the user press enter
                         if (e.key === "Enter") {
                             e.preventDefault();
+
                             // Prevent the user from sending empty message 
-                            if (name !== "") {
+                            if (!name) return;
+
+                            if (e.shiftKey) {
+                                window.open(`/search?name=${name}`, "_blank");
+                            } else {
                                 router.push(`/search?name=${name}`);
                             }
                         }
@@ -112,9 +117,11 @@ const SearchBar: React.FC = () => {
                             display: "flex",
                             flexDirection: "column",
                             overflowY: "auto",
+                            scrollbarColor: "auto transparent",
                             width: "100%",
                             height: "100%",
                             borderRadius: "2rem",
+                            // pointerEvents: "auto",
                         }
                     }
                     >
