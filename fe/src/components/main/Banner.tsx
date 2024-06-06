@@ -19,8 +19,6 @@ import DnsIcon from '@mui/icons-material/Dns';
 import { Carousel } from "react-responsive-carousel";
 
 import { ExtendedFilmDisplayProps } from "@utils/types";
-import { BACKEND_URL } from "@utils/env";
-import { useAlert } from "@utils/providers/alert";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import styles from "@css/component/main/Banner.module.css";

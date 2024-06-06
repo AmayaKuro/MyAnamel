@@ -1,13 +1,13 @@
 .navbar {
-    height: 56px;
-    padding: 0 16px;
-    width: 100%;
-    gap: 2rem;
-    position: sticky;
     display: flex;
-    flex-direction: row;
+    position: sticky;
     align-items: center;
     justify-content: space-between;
+    background-color: var(--mui-palette-background-default);
+    top: 0;
+    padding: 8px 16px;
+    width: 100%;
+    z-index: 999;
 }
 
 .start {
@@ -15,7 +15,7 @@
 }
 
 .center {
-    flex: 0 1 732px;
+    flex: 0 1 690px;
     display: flex;
     flex-direction: row;
     align-items: center;

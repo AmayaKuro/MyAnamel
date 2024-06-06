@@ -39,21 +39,15 @@ interface FilmDisplayProps {
     rating: number;
 }
 
-interface ExtendedFilmDisplayProps {
-    slug: string;
-    name: string;
+interface ExtendedFilmDisplayProps extends FilmDisplayProps {
     originName: string;
+    description: string;
     categories: {
         slug: string;
         name: string;
     }[];
-    description: string;
     currentEpisode: number;
     totalEpisode: number;
-    thumbnail: string;
-    poster: string;
-    views: number;
-    rating: number;
     year: number;
     duration: number;
 }
