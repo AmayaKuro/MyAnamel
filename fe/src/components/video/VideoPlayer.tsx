@@ -31,22 +31,6 @@ const HLSPlayer = dynamic(() => import("./HLSPlayer"), {
 const VideoPlayer: React.FC<VideoProps> = ({ manifest, poster, posterMobile = poster }) => {
   // TODO:  Use this to set the video poster
   const [video, setVideo] = useState<HTMLVideoElement | null>(null); // use callback state instead of ref due to hydration of SSR stream
-  // When manifest changes -> update video -> update poster
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  useEffect(() => {
-    // Add device detech 
-    // TODO: initial a check if necessary (print this out first)
-    const matchMedia = setIsMobile(window.matchMedia("(max-width: 600px)").matches);
-    window.addEventListener("resize", () => matchMedia);
-  }, []);
-
-  useEffect(() => {
-    if (!video) return;
-
-    // On render of video element -> set video poster to avoid flash (can also run transparent gif on video as poster & skip this step)
-    video.poster = isMobile ? posterMobile : poster;
-  }, [isMobile, video]);
 
   return (
     <>
@@ -76,7 +60,7 @@ const VideoPlayer: React.FC<VideoProps> = ({ manifest, poster, posterMobile = po
           controls
           autoPlay
           manifest={manifest}
-          poster={isMobile ? posterMobile : poster}
+          poster={poster}
           fowardVideoRef={setVideo}
         />
       </div>

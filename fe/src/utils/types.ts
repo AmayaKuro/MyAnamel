@@ -33,6 +33,7 @@ interface FilmProps {
 interface FilmDisplayProps {
     slug: string;
     name: string;
+    originName: string;
     thumbnail: string;
     poster: string;
     views: number;

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
+import Link from 'next/link';
 import VideoPlayer from '@components/video/VideoPlayer';
 import Details from '@components/filmInfo/Details';
 import Image from 'next/image';
@@ -15,7 +16,6 @@ import { BACKEND_URL } from '@utils/env';
 import type { FilmProps, currentEpisodeProps, FilmDisplayProps, ErrorResponse } from '@utils/types';
 
 import styles from "@css/app/FilmViewer.module.css";
-import Link from 'next/link';
 
 
 interface RouteParams {
