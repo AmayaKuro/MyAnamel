@@ -41,7 +41,6 @@ interface FilmDisplayProps {
 }
 
 interface ExtendedFilmDisplayProps extends FilmDisplayProps {
-    originName: string;
     description: string;
     categories: {
         slug: string;

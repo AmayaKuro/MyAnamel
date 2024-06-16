@@ -16,6 +16,9 @@ import StarIcon from '@mui/icons-material/Star';
 import ListIcon from '@mui/icons-material/List';
 import BrowseGalleryIcon from '@mui/icons-material/BrowseGallery';
 import DnsIcon from '@mui/icons-material/Dns';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Typography from "@mui/material/Typography";
 import { Carousel } from "react-responsive-carousel";
 
 import { ExtendedFilmDisplayProps } from "@utils/types";
@@ -47,20 +50,20 @@ const Banner: React.FC<ComponentProps> = ({ films }) => {
                 stopOnHover
                 swipeScrollTolerance={30}
                 showThumbs={false}
-                showStatus={false}
+                showStatus={false}  
                 showIndicators={isHovered}
                 dynamicHeight={false}
                 renderArrowNext={(clickHandler, hasNext, label) => <IconButton
-                    className={styles.rightArrow + (isHovered ? "" : " " + styles.hidden)}
+                    className={styles.arrows + " " + styles.rightArrow + (isHovered ? "" : " " + styles.hidden)}
                     onClick={clickHandler}
                     aria-label={label}
-                    children={<ArrowCircleRightIcon fontSize="large" color="primary" />}
+                    children={<ArrowForwardIosIcon fontSize="medium" />}
                 />}
                 renderArrowPrev={(clickHandler, hasNext, label) => <IconButton
-                    className={styles.leftArrow + (isHovered ? "" : " " + styles.hidden)}
+                    className={styles.arrows + " " + styles.leftArrow + (isHovered ? "" : " " + styles.hidden)}
                     onClick={clickHandler}
                     aria-label={label}
-                    children={<ArrowCircleLeftIcon fontSize="large" color="primary" />}
+                    children={<ArrowBackIosNewIcon fontSize="medium" />}
                 />}
 
             >
@@ -69,14 +72,14 @@ const Banner: React.FC<ComponentProps> = ({ films }) => {
                         return (
                             <div className={styles.film} key={film.slug}>
                                 <Link href={`/phim/${film.slug}`}>
-                                    <Image className={styles.poster} src={film.poster} alt={film.name} width={1920} height={1080}  />
+                                    <Image className={styles.poster} src={film.poster} alt={film.name} width={1920} height={1080} />
                                 </Link>
 
                                 <div className={styles.overlay}>
-                                    <h2>{film.name}</h2>
-                                    <p className={styles.originName}>{film.originName}</p>
+                                    <Typography variant="h5">{film.name}</Typography>
+                                    <Typography className={styles.originName}>{film.originName}</Typography>
                                     <div className={styles.stat}>
-                                        <p>
+                                        <p className="iconContainer">
                                             {film.rating <= 2
                                                 ? <StarOutlineIcon fontSize="small" />
                                                 : film.rating <= 4
@@ -84,18 +87,18 @@ const Banner: React.FC<ComponentProps> = ({ films }) => {
                                                     : <StarIcon fontSize="small" />}
                                             {film.rating}/5
                                         </p>
-                                        <p>
+                                        <p className="iconContainer">
                                             <VisibilityIcon fontSize="small" /> {film.views}
                                         </p>
-                                        <p>
+                                        <p className="iconContainer">
                                             <BrowseGalleryIcon fontSize="small" /> {film.duration} phút
                                         </p>
-                                        <p>
+                                        <p className="iconContainer">
                                             <ListIcon fontSize="small" />
                                             {film.currentEpisode}/{film.totalEpisode ? film.totalEpisode : "?"}
                                         </p>
                                     </div>
-                                    <div className={styles.description} dangerouslySetInnerHTML={{ __html: film.description }} />
+                                    <Typography className={styles.description} dangerouslySetInnerHTML={{ __html: film.description }} />
 
                                     <div className={styles.categories}>
                                         <DnsIcon /> Thể loại: {
@@ -119,7 +122,7 @@ const Banner: React.FC<ComponentProps> = ({ films }) => {
                         );
                     })}
             </Carousel >
-        </div>
+        </div >
     );
 };
 
