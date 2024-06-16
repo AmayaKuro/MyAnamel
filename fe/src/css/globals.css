@@ -16,9 +16,14 @@ body {
 
 .container {
   position: relative;
-  overflow: hidden;
   background-color: var(--mui-palette-background-paper);
   border-radius: 2rem;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 @media (prefers-color-scheme: dark) {

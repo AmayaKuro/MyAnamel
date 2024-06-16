@@ -10,16 +10,15 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from '@mui/icons-material/Search';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import BrowseGalleryIcon from '@mui/icons-material/BrowseGallery';
-import ListIcon from '@mui/icons-material/List';
+import Typography from "@mui/material/Typography";
 
-import { ExtendedFilmDisplayProps, ErrorResponse } from "@/utils/types";
+import { FilmDisplayProps, ErrorResponse } from "@/utils/types";
 import { BACKEND_URL } from "@/utils/env";
 
 
 const SearchBar: React.FC = () => {
     const [name, setName] = useState("");
-    const [films, setFilms] = useState<ExtendedFilmDisplayProps[]>([]);
+    const [films, setFilms] = useState<FilmDisplayProps[]>([]);
 
     const [focus, setFocus] = useState(false);
     const open = useMemo(() => !!name && focus, [name, focus]);
@@ -27,12 +26,13 @@ const SearchBar: React.FC = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (name === "") return;
+        if (!name) return;
 
         fetch(`${BACKEND_URL}/film/search?` + new URLSearchParams({
-            name: name,
+            name: name.trimEnd(),
+            extend: "false",
         })).then((res) => res.json())
-            .then((data: ExtendedFilmDisplayProps[] & ErrorResponse) => {
+            .then((data: FilmDisplayProps[] & ErrorResponse) => {
                 if (data.statusCode) {
                     setFilms([]);
                 } else {
@@ -69,10 +69,12 @@ const SearchBar: React.FC = () => {
                             // Prevent the user from sending empty message 
                             if (!name) return;
 
+                            setFocus(false);
+
                             if (e.shiftKey) {
-                                window.open(`/search?name=${name}`, "_blank");
+                                window.open(`/tim-kiem/phim?name=${name}`, "_blank");
                             } else {
-                                router.push(`/search?name=${name}`);
+                                router.push(`/tim-kiem/phim?name=${name}`);
                             }
                         }
                     }}
@@ -86,9 +88,10 @@ const SearchBar: React.FC = () => {
                 <IconButton
                     disableRipple
                     onClick={() => {
-                        if (name === "") return;
+                        if (!name) return;
 
-                        router.push(`/search?name=${name}`)
+                        setFocus(false);
+                        router.push(`/tim-kiem/phim?name=${name}`)
                     }}
                     sx={{
                         borderRadius: "0 40px 40px 0",
@@ -138,28 +141,25 @@ const SearchBar: React.FC = () => {
                                     }}
                                 />
                                 <Box width="100%">
-                                    <p>{film.name}</p>
-                                    <p style={{
-                                        display: "-webkit-box",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        WebkitBoxOrient: "vertical",
-                                        WebkitLineClamp: 1,
-                                        color: "var(--mui-palette-text-secondary)",
-                                        fontSize: "0.8em",
-                                        marginBottom: "0.5rem",
-                                    }}
+                                    <Typography fontSize="medium" >{film.name}</Typography>
+                                    <Typography
+                                        sx={{
+                                            display: "-webkit-box",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            WebkitBoxOrient: "vertical",
+                                            WebkitLineClamp: 1,
+                                            fontSize: "small",
+                                            color: "text.secondary",
+                                            marginBottom: "0.5rem",
+                                        }}
                                     >
-                                        {film.originName}</p>
+                                        {film.originName}
+                                    </Typography>
 
                                     <Box display="flex" gap="6px">
-                                        <p style={{ display: "flex", alignItems: "center", gap: "4px" }}><VisibilityIcon fontSize="small" />{film.views}</p>
-                                        <p style={{ display: "flex", alignItems: "center", gap: "4px" }}><StarOutlineIcon fontSize="small" />{film.rating}</p>
-                                        <p style={{ display: "flex", alignItems: "center", gap: "4px" }}><BrowseGalleryIcon fontSize="small" /> {film.duration} phút</p>
-                                        <p style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                                            <ListIcon fontSize="small" />
-                                            {film.currentEpisode}/{film.totalEpisode ? film.totalEpisode : "?"}
-                                        </p>
+                                        <p className="iconContainer"><VisibilityIcon fontSize="small" />{film.views}</p>
+                                        <p className="iconContainer"><StarOutlineIcon fontSize="small" />{film.rating}</p>
                                     </Box>
                                 </Box>
                             </Button>
