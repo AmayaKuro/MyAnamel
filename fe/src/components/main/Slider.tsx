@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import { Carousel } from "react-responsive-carousel";
 
 import { FilmDisplayProps } from "@utils/types";
-import { BACKEND_URL } from "@utils/env";
-import { useAlert } from "@utils/providers/alert";
 
 import styles from "@css/component/main/Slider.module.css";
 
@@ -56,7 +54,7 @@ const Section: React.FC<ComponentProps> = ({ films }) => {
                     films.map((film, index) => {
                         return (
                             <div key={film.slug} className={styles.film + (selectedFilmIndex === index ? " " + styles.selected : "")}>
-                                <Image src={film.thumbnail} alt={film.name} fill loading="lazy"/>
+                                <Image src={film.thumbnail} alt={film.name} fill loading="lazy" />
                                 <p className="legend">{film.name}</p>
                             </div>
                         );

@@ -13,7 +13,7 @@ import StarIcon from '@mui/icons-material/Star';
 
 import { useAlert } from '@utils/providers/alert';
 import { BACKEND_URL } from '@utils/env';
-import type { FilmProps, currentEpisodeProps, FilmDisplayProps, ErrorResponse } from '@utils/types';
+import type { FilmProps, currentEpisodeProps, FilmDisplayProps, ErrorProps, BEResponse } from '@utils/types';
 
 import styles from "@css/app/FilmViewer.module.css";
 
@@ -52,17 +52,17 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
         episodes: [],
     });
     const [recommendFilms, setRecommendFilms] = useState<FilmDisplayProps[]>([]);
-    const [error, setError] = useState<ErrorResponse | null>(null);
+    const [error, setError] = useState<ErrorProps | null>(null);
 
     useEffect(() => {
         fetch(`${BACKEND_URL}/film/${slug}`)
-            .then((res) => res.json())
-            .then((data: FilmProps & ErrorResponse) => {
-                if (data.message) {
-                    setError(data);
+            .then((response) => response.json())
+            .then((res: BEResponse) => {
+                if (res.statusCode >= 400) {
+                    setError(res);
                 }
 
-                setFilm(data);
+                setFilm(res.data as FilmProps);
             }).catch((err) => {
                 setError(new Error(err.message));
             });
@@ -109,9 +109,13 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
         if (!film.name) return;
 
         fetch(`${BACKEND_URL}/film/new`)
-            .then((res) => res.json())
-            .then((data: FilmDisplayProps[]) => {
-                setRecommendFilms(data);
+            .then((response) => response.json())
+            .then((res: BEResponse) => {
+                if (res.statusCode >= 400) {
+                    throw res;
+                }
+
+                setRecommendFilms(res.data as FilmDisplayProps[]);
             }).catch((err) => {
                 setAlertMessage("Failed to fetch films! " + "Reason: " + err.message);
                 setSeverity("error");

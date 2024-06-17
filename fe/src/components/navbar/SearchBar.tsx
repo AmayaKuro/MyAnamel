@@ -12,7 +12,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import Typography from "@mui/material/Typography";
 
-import { FilmDisplayProps, ErrorResponse } from "@/utils/types";
+import { FilmDisplayProps, BEResponse, CursorPaginationProps } from "@/utils/types";
 import { BACKEND_URL } from "@/utils/env";
 
 
@@ -31,13 +31,15 @@ const SearchBar: React.FC = () => {
         fetch(`${BACKEND_URL}/film/search?` + new URLSearchParams({
             name: name.trimEnd(),
             extend: "false",
-        })).then((res) => res.json())
-            .then((data: FilmDisplayProps[] & ErrorResponse) => {
-                if (data.statusCode) {
+        })).then((response) => response.json())
+            .then((res: BEResponse) => {
+                if (res.statusCode >= 400) {
                     setFilms([]);
-                } else {
-                    setFilms(data);
+                    throw res;
                 }
+
+                const data = res.data as { films: FilmDisplayProps[], cursor: CursorPaginationProps };
+                setFilms(data.films);
             })
             .catch((err) => console.error(err));
     }, [name]);

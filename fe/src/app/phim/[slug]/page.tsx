@@ -8,7 +8,7 @@ import Details from '@/components/filmInfo/Details';
 
 import { useAlert } from '@utils/providers/alert';
 import { BACKEND_URL } from '@utils/env';
-import type { FilmProps, ErrorResponse } from '@utils/types';
+import type { FilmProps, ErrorProps, BEResponse } from '@utils/types';
 
 import styles from "@css/app/filmInfo.module.css";
 
@@ -44,18 +44,18 @@ const FilmDetail: React.FC<RouteParams> = ({ params: { slug } }) => {
         duration: 0,
         episodes: []
     });
-    const [error, setError] = useState<ErrorResponse | null>(null);
+    const [error, setError] = useState<ErrorProps | null>(null);
 
 
     useEffect(() => {
         fetch(`${BACKEND_URL}/film/${slug}`)
-            .then((res) => res.json())
-            .then((data: FilmProps & ErrorResponse) => {
-                if (data.message) {
-                    setError(data);
-                } else {
-                    setFilm(data);
+            .then((response) => response.json())
+            .then((res: BEResponse) => {
+                if (res.statusCode >= 400) {
+                    throw (res);
                 }
+                
+                setFilm(res.data as FilmProps);
             }).catch((err) => {
                 setError(err);
             });

@@ -8,7 +8,7 @@ import List from "@components/main/List";
 
 import { useAlert } from "@utils/providers/alert";
 import { BACKEND_URL } from "@utils/env";
-import { ExtendedFilmDisplayProps, ErrorResponse } from "@utils/types";
+import { ExtendedFilmDisplayProps, BEResponse, ErrorProps, FilmDisplayProps } from "@utils/types";
 
 import styles from "@css/app/Home.module.css";
 
@@ -18,8 +18,8 @@ const Home: React.FC = () => {
 
   const [bannerFilms, setBannerFilms] = useState<ExtendedFilmDisplayProps[]>([]);
   // Films for the slider and list
-  const [listFilms, setListFilms] = useState<ExtendedFilmDisplayProps[]>([]);
-  const [error, setError] = useState<ErrorResponse | null>(null);
+  const [listFilms, setListFilms] = useState<FilmDisplayProps[]>([]);
+  const [error, setError] = useState<ErrorProps | null>(null);
 
   useEffect(() => {
     setAlertMessage("Hello");
@@ -28,18 +28,26 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/film/popular?extend=true`)
-      .then((res) => res.json())
-      .then((films: ExtendedFilmDisplayProps[]) => {
-        setBannerFilms(films);
+      .then((response) => response.json())
+      .then((res: BEResponse) => {
+        if (res.statusCode >= 400) {
+          throw res;
+        }
+
+        setBannerFilms(res.data as ExtendedFilmDisplayProps[]);
       }).catch((err) => {
         setAlertMessage("Failed to fetch films! " + "Reason: " + err.message);
         setSeverity("error");
       });
 
     fetch(`${BACKEND_URL}/film/new`)
-      .then((res) => res.json())
-      .then((films: ExtendedFilmDisplayProps[]) => {
-        setListFilms(films);
+      .then((respsonse) => respsonse.json())
+      .then((res: BEResponse) => {
+        if (res.statusCode >= 400) {
+          throw res;
+        }
+
+        setListFilms(res.data as FilmDisplayProps[]);
       }).catch((err) => {
         setAlertMessage("Failed to fetch films! " + "Reason: " + err.message);
         setSeverity("error");

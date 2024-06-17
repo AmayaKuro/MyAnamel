@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import LiveTvIcon from '@mui/icons-material/LiveTv';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
@@ -50,7 +48,7 @@ const Banner: React.FC<ComponentProps> = ({ films }) => {
                 stopOnHover
                 swipeScrollTolerance={30}
                 showThumbs={false}
-                showStatus={false}  
+                showStatus={false}
                 showIndicators={isHovered}
                 dynamicHeight={false}
                 renderArrowNext={(clickHandler, hasNext, label) => <IconButton

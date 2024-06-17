@@ -5,17 +5,17 @@ import Image from 'next/image';
 import Button from '@mui/material/Button';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-import type { ErrorResponse } from '@utils/types';
+import type { ErrorProps } from '@utils/types';
 
 import styles from "@css/app/Error.module.css";
 
 
-interface ErrorProps {
-    error: ErrorResponse;
+interface ComponentProps {
+    error: ErrorProps;
     reset: () => void;
 }
 
-const Error: React.FC<ErrorProps> = ({ error, reset }) => {
+const Error: React.FC<ComponentProps> = ({ error, reset }) => {
     return (
         <div className={styles.container}>
             <Image className={styles.image} src="/error.jpg" alt="Error" width={200} height={200} />

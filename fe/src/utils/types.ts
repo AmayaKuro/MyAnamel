@@ -57,9 +57,35 @@ interface currentEpisodeProps {
     episodeIndex: number;
 }
 
-interface ErrorResponse {
+interface CursorPaginationProps {
+    cursor: string;
+}
+
+interface PagePaginationProps {
+    amount: number;
+    currentPage: number;
+    totalPage: number;
+    totalAmount: number;
+}
+
+interface BEResponse {
+    message: string;
+    statusCode: number;
+    data: any;
+}
+
+interface ErrorProps {
     message?: string;
     statusCode?: number;
 }
 
-export type { FilmProps, FilmDisplayProps, ExtendedFilmDisplayProps, currentEpisodeProps, ErrorResponse }; 
+export type {
+    FilmProps,
+    FilmDisplayProps,
+    ExtendedFilmDisplayProps,
+    currentEpisodeProps,
+    ErrorProps,
+    BEResponse,
+    CursorPaginationProps,
+    PagePaginationProps
+}; 
