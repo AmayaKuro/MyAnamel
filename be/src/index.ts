@@ -3,7 +3,8 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 
-import { commonHeader, errorHandler } from './utils/middlewares.js';
+import commonHeader from './middlewares/commonHeader.js';
+import errorHandler from './middlewares/errorHandler.js';
 
 import filmRouter from './routes/film.js';
 
