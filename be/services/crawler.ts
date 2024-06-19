@@ -135,7 +135,9 @@ const ophim1 = async () => {
 
                 console.log("Crawled film", film.movie.slug);
                 console.log("New", !match);
-                console.log("Will Updated", !match || match.updatedAt < new Date(film.movie.modified.time));
+                if (match) {
+                    console.log("Will Updated", match.updatedAt < new Date(film.movie.modified.time))
+                }
 
                 // Check if film already exists, if not insert it
                 if (!match) {
@@ -188,10 +190,10 @@ const ophim1 = async () => {
                             },
                         });
                     } else {
-                        // Else stop crawling   
-                        console.log("Finished crawling (film existed)");
-                        done = true;
-                        break;
+                        // // Else stop crawling   
+                        // console.log("Finished crawling (film existed)");
+                        // done = true;
+                        // break;
                     }
                 }
             }
