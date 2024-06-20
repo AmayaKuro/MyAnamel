@@ -1,23 +1,25 @@
 import { Request, Response, NextFunction } from "express";
 
 import { DBFilm } from "../utils/database";
-import inputQuery from "../utils/filmQuery";
+import { inputPagination } from "../utils/filmQuery";
 import responsePacking from "../utils/responsePacking";
 
 const newFilms = async (req: Request, res: Response, next: NextFunction) => {
-    const { page } = inputQuery(req);
+    const { page } = inputPagination(req);
 
     let film;
 
     try {
         film = await DBFilm.aggregate([
+            ...(page ? [
+                {
+                    $skip: (page - 1) * 12,
+                },
+            ] : []),
             {
                 $sort: {
                     updatedAt: -1,
                 },
-            },
-            {
-                $skip: (page - 1) * 12,
             },
             {
                 $limit: 12,

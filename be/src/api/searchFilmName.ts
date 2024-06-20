@@ -2,12 +2,12 @@ import { Request, Response, NextFunction } from "express";
 
 import responsePackings from "../utils/responsePacking";
 import { DBFilm } from "../utils/database";
-import inputQuery from "../utils/filmQuery";
+import { inputQuery, inputPagination } from "../utils/filmQuery";
 
 
 const searchFilmName = async (req: Request, res: Response, next: NextFunction) => {
     const { name, extend } = inputQuery(req);
-    const cursor = req.query.cursor;
+    const { cursor } = inputPagination(req);
 
     if (!name) {
         return next({
@@ -18,6 +18,22 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
 
     let films;
     let pipeline = [
+        ...(cursor ? [
+            {
+                $match: {
+                    $or: [
+                        {
+                            updatedAt: { $lt: cursor.updatedAt },
+                        },
+                        {
+                            updatedAt: cursor.updatedAt,
+                            _id: { $lt: cursor.id },
+                        },
+                    ],
+                },
+            },
+        ] : []
+        ),
         {
             $match: {
                 $or: [
@@ -78,9 +94,11 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
     responsePackings(res, {
         data: {
             films,
-            cursor: films.length === 12
-                ? films[films.length - 1].updatedAt + "_" + films[films.length - 1]._id
-                : null,
+            pagination: {
+                cursor: films.length === 12
+                    ? films[films.length - 1].updatedAt.getTime() + "_" + films[films.length - 1]._id
+                    : null,
+            }
         },
     });
 }

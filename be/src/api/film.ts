@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import { DBFilm } from "../utils/database";
-import inputQuery from "../utils/filmQuery";
+import { inputQuery } from "../utils/filmQuery";
 
 
 // Add after finish the whole project 

@@ -2,14 +2,20 @@ import { Request, Response, NextFunction } from "express";
 
 import { DBFilm } from "../utils/database";
 import { CURRENT_SEASON } from "../utils/env";
-import inputQuery from "../utils/filmQuery";
+import { inputQuery, inputPagination } from "../utils/filmQuery";
 import responsePacking from "../utils/responsePacking";
 
 const popularFilms = async (req: Request, res: Response, next: NextFunction) => {
-    const { page, extend } = inputQuery(req);
+    const { extend } = inputQuery(req);
+    const { page } = inputPagination(req);
 
     let films;
     let pipeline = [
+        ...(page ? [
+            {
+                $skip: (page - 1) * 12,
+            },
+        ] : []),
         {
             $addFields: {
                 season: { $ceil: { $divide: [{ $month: "$updatedAt" }, 3] } },
@@ -42,9 +48,6 @@ const popularFilms = async (req: Request, res: Response, next: NextFunction) => 
                 rating: -1,
                 updatedAt: -1,
             },
-        },
-        {
-            $skip: (page - 1) * 12,
         },
         {
             $limit: 12,
