@@ -13,6 +13,8 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import BrowseGalleryIcon from '@mui/icons-material/BrowseGallery';
 import ListIcon from '@mui/icons-material/List';
 import Typography from '@mui/material/Typography';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 import { BEResponse, CursorPaginationProps, ErrorProps, ExtendedFilmDisplayProps } from '@/utils/types';
 import { BACKEND_URL } from '@/utils/env';
@@ -23,9 +25,7 @@ const NameSearch: React.FC = () => {
     const [cursor, setCursor] = useState(""); // Cursor for pagination
     const [hasMore, setHasMore] = useState(true);
 
-    console.log("Film length", !!films.length)
-
-    const [filter, setFilter] = useState('');
+    const [filter, setFilter] = useState("newest");
     const [error, setError] = useState<ErrorProps>();
 
     const params = useSearchParams();
@@ -47,11 +47,11 @@ const NameSearch: React.FC = () => {
             const response = await fetch(`${BACKEND_URL}/film/search?` + new URLSearchParams({
                 name,
                 cursor,
+                filter,
                 extend: "true",
             }));
 
             const res = await response.json() as BEResponse;
-            console.log(res)
 
             if (res.statusCode >= 400) {
                 throw res;
@@ -62,36 +62,51 @@ const NameSearch: React.FC = () => {
                 pagination: CursorPaginationProps,
             };
 
-
             setFilms((old) => [
                 ...old,
                 ...data.films,
             ]);
             setHasMore(data.films.length === 12);
-            setCursor(data.pagination.cursor);
+            setCursor(data.pagination.cursor ?? "");
         } catch (err) {
             console.log(err);
         }
     }, [name, filter, cursor]);
 
     useEffect(() => {
-        setFilms([]);
-        setCursor("");
-
         fetchFilms();
+
+        // Cleanup if re-fetch
+        return () => {
+            setCursor("");
+            setFilms([]);
+        };
     }, [name, filter]);
     `${0 ? 3 : 1000}`
     return (
         <>
             <Typography variant='h2' fontSize="2em" paddingLeft="1rem" marginBottom="2rem">Tìm kiếm cho từ khoá "{name}"</Typography>
-            <Box
-                display="flex"
-                justifyContent="center"
-                borderBottom="1px solid #ccc"
+            <Tabs
+                value={filter}
+                onChange={(event, newValue) => {
+                    // Reset cursor when change filter
+                    setCursor("");
+
+                    setFilter(newValue)
+                }}
+                aria-label="Platform"
+                sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    borderBottom: "1px solid",
+                    borderBottomColor: "text.secondary",
+                    marginBottom: "1rem",
+                    marginInline: "3rem",
+                }}
             >
-                <Button variant="contained" onClick={() => setFilter("")}>Đăng gần đây</Button>
-                <Button variant="contained" onClick={() => setFilter("")}>Xem nhiều nhất</Button>
-            </Box>
+                <Tab label="Mới nhất" value="newest" defaultChecked />
+                <Tab label="Phổ biến" value="popular" />
+            </Tabs>
             <InfiniteScroll
                 dataLength={films.length}
                 next={fetchFilms}
