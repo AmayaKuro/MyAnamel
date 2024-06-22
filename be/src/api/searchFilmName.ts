@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { Document } from "mongodb";
 
 import responsePackings from "../utils/responsePacking";
 import { DBFilm } from "../utils/database";
@@ -9,6 +10,8 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
     const { name, extend } = inputQuery(req);
     const { cursor } = inputPagination(req);
 
+    const filter = req.query.sort || "newest";
+
     if (!name) {
         return next({
             statusCode: 400,
@@ -17,23 +20,7 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
     }
 
     let films;
-    let pipeline = [
-        ...(cursor ? [
-            {
-                $match: {
-                    $or: [
-                        {
-                            updatedAt: { $lt: cursor.updatedAt },
-                        },
-                        {
-                            updatedAt: cursor.updatedAt,
-                            _id: { $lt: cursor.id },
-                        },
-                    ],
-                },
-            },
-        ] : []
-        ),
+    let pipeline: Document[] = [
         {
             $match: {
                 $or: [
@@ -80,6 +67,39 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
         },
     ];
 
+    if (cursor) {
+        pipeline.unshift({
+            $match: {
+                $or: [
+                    {
+                        updatedAt: { $lt: cursor.updatedAt },
+                    },
+                    {
+                        updatedAt: { $eq: cursor.updatedAt },
+                        _id: { $lt: cursor.id },
+                    },
+                ],
+            },
+        });
+    }
+
+    switch (filter) {
+        case "newest":
+            pipeline.unshift({
+                $sort: {
+                    updatedAt: -1,
+                },
+            });
+            break;
+        case "popular":
+            pipeline.unshift({
+                $sort: {
+                    views: -1,
+                },
+            });
+            break;
+    };
+
     try {
         films = await DBFilm.aggregate(pipeline).toArray();
     } catch (err) {
@@ -97,7 +117,7 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
             pagination: {
                 cursor: films.length === 12
                     ? films[films.length - 1].updatedAt.getTime() + "_" + films[films.length - 1]._id
-                    : null,
+                    : "",
             }
         },
     });
