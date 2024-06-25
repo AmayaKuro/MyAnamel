@@ -70,7 +70,7 @@ const Banner: React.FC<ComponentProps> = ({ films }) => {
                         return (
                             <div className={styles.film} key={film.slug}>
                                 <Link href={`/phim/${film.slug}`}>
-                                    <Image className={styles.poster} src={film.poster} alt={film.name} width={1920} height={1080} />
+                                    <Image className={styles.poster} src={film.poster} alt={film.name} width={1080} height={608} />
                                 </Link>
 
                                 <div className={styles.overlay}>

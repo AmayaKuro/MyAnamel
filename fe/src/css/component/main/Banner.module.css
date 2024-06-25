@@ -1,6 +1,5 @@
 .container {
     width: 100%;
-    height: 625px;
     padding: 2rem;
 }
 
@@ -44,17 +43,14 @@
 
 
 .film {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    /* overflow: hidden; */
-    /* border-radius: 1.7rem; */
+    overflow: hidden;
+    border-radius: 1.7rem;
     background-color: black;
 }
 
 .poster {
     position: relative;
-    height: 100%;
+    height: 560px;
     pointer-events: fill !important;
     border-radius: 1.7rem;
 }
