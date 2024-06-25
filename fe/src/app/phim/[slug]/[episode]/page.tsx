@@ -31,6 +31,7 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
 
     const [currentEpisode, setCurrentEpisode] = useState<currentEpisodeProps>();
     const [film, setFilm] = useState<FilmProps>({
+        _id: "",
         slug: "",
         name: "",
         originName: "",

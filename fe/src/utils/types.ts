@@ -1,4 +1,5 @@
 interface FilmProps {
+    _id: string;
     slug: string;
     name: string;
     originName: string;
@@ -31,6 +32,7 @@ interface FilmProps {
 }
 
 interface FilmDisplayProps {
+    _id: string;
     slug: string;
     name: string;
     originName: string;
