@@ -190,10 +190,10 @@ const ophim1 = async () => {
                             },
                         });
                     } else {
-                        // // Else stop crawling   
-                        // console.log("Finished crawling (film existed)");
-                        // done = true;
-                        // break;
+                        // Else stop crawling   
+                        console.log("Finished crawling (film existed)");
+                        done = true;
+                        break;
                     }
                 }
             }
