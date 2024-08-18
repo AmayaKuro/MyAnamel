@@ -3,16 +3,16 @@ import { Document } from "mongodb";
 
 import responsePackings from "../utils/responsePacking";
 import { DBFilm } from "../utils/database";
-import { inputQuery, inputPagination } from "../utils/filmQuery";
+import { inputPagination } from "../utils/filmQuery";
 
 
 const searchFilmName = async (req: Request, res: Response, next: NextFunction) => {
-    const { name, extend } = inputQuery(req);
+    const { q = "", extend } = req.query;
     const { cursor } = inputPagination(req);
 
     const filter = req.query.sort || "newest";
 
-    if (!name) {
+    if (!q || typeof q !== "string") {
         return next({
             statusCode: 400,
             message: "Film not found",
@@ -26,17 +26,17 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
                 $or: [
                     {
                         name: {
-                            $regex: new RegExp(name, "i"),
+                            $regex: new RegExp(q, "i"),
                         },
                     },
                     {
                         originName: {
-                            $regex: new RegExp(name, "i"),
+                            $regex: new RegExp(q, "i"),
                         },
                     },
                     {
                         slug: {
-                            $regex: new RegExp(name, "i"),
+                            $regex: new RegExp(q, "i"),
                         },
                     }
                 ],
