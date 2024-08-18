@@ -1,15 +1,5 @@
 import { Request } from "express";
 
-const inputQuery = (req: Request) => {
-    let extend = req.query.extend === "true";
-    let name = (typeof req.query.name !== "string" || req.query.name.length < 1) ? "" : req.query.name;
-
-    return {
-        extend,
-        name,
-    };
-}
-
 const inputPagination = (req: Request) => {
     let cursor, page;
 
@@ -31,4 +21,4 @@ const inputPagination = (req: Request) => {
     };
 }
 
-export { inputQuery, inputPagination };
+export { inputPagination };

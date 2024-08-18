@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from "express";
 
 import { DBFilm } from "../utils/database";
 import { CURRENT_SEASON } from "../utils/env";
-import { inputQuery, inputPagination } from "../utils/filmQuery";
+import { inputPagination } from "../utils/filmQuery";
 import responsePacking from "../utils/responsePacking";
 
 const popularFilms = async (req: Request, res: Response, next: NextFunction) => {
-    const { extend } = inputQuery(req);
+    const { extend } = req.query;
     const { page } = inputPagination(req);
 
     let films;
@@ -61,7 +61,7 @@ const popularFilms = async (req: Request, res: Response, next: NextFunction) => 
                 poster: 1,
                 views: 1,
                 rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
-                ...(extend ? {
+                ...(extend === "true" ? {
                     categories: 1,
                     description: 1,
                     currentEpisode: 1,
@@ -71,7 +71,7 @@ const popularFilms = async (req: Request, res: Response, next: NextFunction) => 
                 } : {})
             },
         },
-        ...(extend ? [
+        ...(extend === "true" ? [
             {
                 $lookup: {
                     from: "categories",

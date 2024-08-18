@@ -55,7 +55,7 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
                 views: 1,
                 updatedAt: 1,
                 rating: { $cond: [{ $eq: ["$rateCount", 0] }, "$rating", { $divide: ["$rating", "$rateCount"] }] },
-                ...(extend ? {
+                ...(extend === "true" ? {
                     categories: 1,
                     description: 1,
                     currentEpisode: 1,
