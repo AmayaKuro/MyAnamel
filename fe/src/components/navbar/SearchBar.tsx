@@ -17,19 +17,19 @@ import { BACKEND_URL } from "@/utils/env";
 
 
 const SearchBar: React.FC = () => {
-    const [name, setName] = useState("");
+    const [query, setquery] = useState("");
     const [films, setFilms] = useState<FilmDisplayProps[]>([]);
 
     const [focus, setFocus] = useState(false);
-    const open = useMemo(() => !!name && focus, [name, focus]);
+    const open = useMemo(() => !!query && focus, [query, focus]);
 
     const router = useRouter();
 
     useEffect(() => {
-        if (!name) return;
+        if (!query) return;
 
         fetch(`${BACKEND_URL}/film/search?` + new URLSearchParams({
-            name: name.trimEnd(),
+            q: query.trimEnd(),
             extend: "false",
         })).then((response) => response.json())
             .then((res: BEResponse) => {
@@ -42,7 +42,7 @@ const SearchBar: React.FC = () => {
                 setFilms(data.films);
             })
             .catch((err) => console.error(err));
-    }, [name]);
+    }, [query]);
 
 
     return (
@@ -50,7 +50,7 @@ const SearchBar: React.FC = () => {
             <Box display="flex" minWidth="690px">
                 <Input
                     disableUnderline
-                    value={name}
+                    value={query}
                     placeholder="Type an anime's name"
                     autoComplete="true"
                     onFocus={() => setFocus(true)}
@@ -61,7 +61,7 @@ const SearchBar: React.FC = () => {
                             setFilms([]);
                         }
 
-                        setName(e.currentTarget.value);
+                        setquery(e.currentTarget.value);
                     }}
                     onKeyDown={(e) => {
                         // Send the message if the user press enter
@@ -69,14 +69,14 @@ const SearchBar: React.FC = () => {
                             e.preventDefault();
 
                             // Prevent the user from sending empty message 
-                            if (!name) return;
+                            if (!query) return;
 
                             setFocus(false);
 
                             if (e.shiftKey) {
-                                window.open(`/tim-kiem/phim?name=${name}`, "_blank");
+                                window.open(`/tim-kiem/phim?q=${query}`, "_blank");
                             } else {
-                                router.push(`/tim-kiem/phim?name=${name}`);
+                                router.push(`/tim-kiem/phim?q=${query}`);
                             }
                         }
                     }}
@@ -90,10 +90,10 @@ const SearchBar: React.FC = () => {
                 <IconButton
                     disableRipple
                     onClick={() => {
-                        if (!name) return;
+                        if (!query) return;
 
                         setFocus(false);
-                        router.push(`/tim-kiem/phim?name=${name}`)
+                        router.push(`/tim-kiem/phim?q=${query}`)
                     }}
                     sx={{
                         borderRadius: "0 40px 40px 0",
