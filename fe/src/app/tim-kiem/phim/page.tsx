@@ -30,22 +30,22 @@ const NameSearch: React.FC = () => {
 
     const params = useSearchParams();
 
-    const name = useMemo(() => {
-        if (!params.has("name")) {
+    const query = useMemo(() => {
+        if (!params.has("q")) {
             throw {
                 statusCode: 400,
                 message: "Không tìm thấy từ khoá tìm kiếm",
             };
         }
 
-        return params.get("name")!;
-    }, [params.get("name")]);
+        return params.get("q")!;
+    }, [params.get("q")]);
 
 
     const fetchFilms = useCallback(async () => {
         try {
             const response = await fetch(`${BACKEND_URL}/film/search?` + new URLSearchParams({
-                name,
+                q: query,
                 cursor,
                 filter,
                 extend: "true",
@@ -71,7 +71,7 @@ const NameSearch: React.FC = () => {
         } catch (err) {
             console.log(err);
         }
-    }, [name, filter, cursor]);
+    }, [query, filter, cursor]);
 
     useEffect(() => {
         fetchFilms();
@@ -81,11 +81,11 @@ const NameSearch: React.FC = () => {
             setCursor("");
             setFilms([]);
         };
-    }, [name, filter]);
-    `${0 ? 3 : 1000}`
+    }, [query, filter]);
+
     return (
         <>
-            <Typography variant='h2' fontSize="2em" paddingLeft="1rem" marginBottom="2rem">Tìm kiếm cho từ khoá "{name}"</Typography>
+            <Typography variant='h2' fontSize="2em" paddingLeft="1rem" marginBottom="2rem">Tìm kiếm cho từ khoá "{query}"</Typography>
             <Tabs
                 value={filter}
                 onChange={(event, newValue) => {
