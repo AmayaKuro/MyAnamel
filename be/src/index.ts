@@ -2,11 +2,14 @@ import "dotenv/config.js";
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import session from 'express-session';
 
 import commonHeader from './middlewares/commonHeader.js';
 import errorHandler from './middlewares/errorHandler.js';
 
 import filmRouter from './routes/film.js';
+
+import { SECRET_KEY, ENV } from "./utils/env.js";
 
 
 // Options
@@ -21,7 +24,21 @@ const corsOptions = {
     origin: ["http://localhost:3000"],
 }
 
-app.use(morgan("dev"), cors(corsOptions), commonHeader);
+const sessionOptions = {
+    secret: SECRET_KEY,
+    cookie: {
+        secure: ENV === "production",
+        httpOnly: true,
+    },
+}
+
+app.use(
+    morgan("dev"),
+    cors(corsOptions),
+    commonHeader,
+    // session(sessionOptions),
+    express.json(),
+);
 
 
 // Routes

@@ -12,7 +12,7 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
 
     const filter = req.query.sort || "newest";
 
-    if (!q || typeof q !== "string") {
+    if (typeof q !== "string") {
         return next({
             statusCode: 400,
             message: "Film not found",
