@@ -30,31 +30,11 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
     const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
 
     const [currentEpisode, setCurrentEpisode] = useState<currentEpisodeProps>();
-    const [film, setFilm] = useState<FilmProps>({
-        _id: "",
-        slug: "",
-        name: "",
-        originName: "",
-        categories: [],
-        description: "",
-        status: "ongoing",
-        currentEpisode: 0,
-        createdAt: 0,
-        updatedAt: 0,
-        totalEpisode: 0,
-        thumbnail: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-        poster: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-        trailer: "",
-        subLang: "",
-        views: 0,
-        rating: 0,
-        year: 0,
-        duration: 0,
-        episodes: [],
-    });
+    const [film, setFilm] = useState<FilmProps | null>(null);
     const [recommendFilms, setRecommendFilms] = useState<FilmDisplayProps[]>([]);
     const [error, setError] = useState<ErrorProps | null>(null);
 
+    // Fetch film data
     useEffect(() => {
         fetch(`${BACKEND_URL}/film/${slug}`)
             .then((response) => response.json())
@@ -75,8 +55,9 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
         };
     }, [error]);
 
+    // Get current episode index
     useEffect(() => {
-        if (!film.name) return;
+        if (!film) return;
 
         const fail = film.episodes.every((server, i) => {
             // Break the loop if found
@@ -87,8 +68,7 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
                         episodeIndex: y,
                     });
 
-                    // Send viewed status to BE
-                    // fetch("/api/film/viewed")
+                    // Return false to break the loop if found
                     return false;
                 }
 
@@ -105,9 +85,9 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
         }
     }, [film]);
 
-
+    // Get recommend films (after fetching film data)
     useEffect(() => {
-        if (!film.name) return;
+        if (!film) return;
 
         fetch(`${BACKEND_URL}/film/new`)
             .then((response) => response.json())
@@ -123,12 +103,29 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
             });
     }, [film]);
 
+    // Send viewed status to BE
+    useEffect(() => {
+        if (!currentEpisode || !film) return;
+        console.log("sending view status to BE", currentEpisode, film);
+
+         fetch(`${BACKEND_URL}/film/view`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify({
+                filmID: film._id,
+                filmSlug: film.slug,
+            }),
+        });
+    }, [currentEpisode, film]);
+
     return (
         <div className={styles.main}>
             <div className={styles.left}>
                 <div className={styles.videoContainer}>
                     <VideoPlayer
-                        manifest={(currentEpisode && film.name) ? film.episodes[currentEpisode.serverIndex].data[currentEpisode.episodeIndex].m3u8Link : ""}
+                        manifest={(currentEpisode && film) ? film.episodes[currentEpisode.serverIndex].data[currentEpisode.episodeIndex].m3u8Link : ""}
                         poster={film ? film.poster : "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg"}
                     />
                 </div>

@@ -24,6 +24,7 @@ const FilmDetail: React.FC<RouteParams> = ({ params: { slug } }) => {
     const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
 
     const [film, setFilm] = useState<FilmProps>({
+        _id: "",
         slug: "",
         name: "",
         originName: "Never Gonna Give You Up",

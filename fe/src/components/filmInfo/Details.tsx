@@ -16,7 +16,7 @@ import styles from "@css/component/filmInfo/Details.module.css";
 
 
 interface ComponentProps {
-    film: FilmProps;
+    film: FilmProps | null;
     currentEpisode?: currentEpisodeProps;
 }
 
@@ -38,7 +38,7 @@ const FilmDetail: React.FC<ComponentProps> = ({ film, currentEpisode }) => {
                 </TabList>
 
                 <TabPanel className={styles.episodeContainer} value="episodes">
-                    {film.episodes.map((server, serverIndex) => {
+                    {film && film.episodes.map((server, serverIndex) => {
                         return (
                             <div key={server.serverName}>
                                 <h3>{server.serverName}</h3>
@@ -64,11 +64,11 @@ const FilmDetail: React.FC<ComponentProps> = ({ film, currentEpisode }) => {
                     })}
                 </TabPanel>
                 <TabPanel value="description">
-                    <div className={styles.description} dangerouslySetInnerHTML={{ __html: film.description }} />
+                    <div className={styles.description} dangerouslySetInnerHTML={{ __html: film ? film.description : "" }} />
                 </TabPanel>
                 <TabPanel className={styles.categories} value="categories" >
                     <DnsIcon /> Thể loại: {
-                        film.categories.map((category, index) => {
+                        film && film.categories.map((category, index) => {
                             return [
                                 <Link href={`/the-loai/${category.slug}`} key={category.slug} style={{ textDecoration: "none" }}>
                                     {category.name}
