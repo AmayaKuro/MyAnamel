@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 
-import { DBFilm } from "../utils/database";
-import { inputPagination } from "../utils/filmQuery";
-import responsePacking from "../utils/responsePacking";
+import { DBFilm } from "../../utils/database";
+import { inputPagination } from "../../utils/filmQuery";
+import responsePacking from "../../utils/responsePacking";
 
 const newFilms = async (req: Request, res: Response, next: NextFunction) => {
     const { page } = inputPagination(req);

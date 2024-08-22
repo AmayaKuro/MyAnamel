@@ -1,10 +1,10 @@
 import express from "express";
 
-import searchFilmName from "../api/searchFilmName";
-import searchSpecificFilm from "../api/searchSpecificFilm";
-import popularFilms from "../api/popularFilms";
-import newFilms from "../api/newFilms";
-import viewControl from "../api/viewControl";
+import searchFilmName from "../api/film/searchFilmName";
+import searchSpecificFilm from "../api/film/searchSpecificFilm";
+import popularFilms from "../api/film/popularFilms";
+import newFilms from "../api/film/newFilms";
+import viewControl from "../api/film/viewControl";
 
 const filmRouter = express.Router();
 

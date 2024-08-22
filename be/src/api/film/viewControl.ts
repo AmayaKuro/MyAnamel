@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-import { DBFilm } from "../utils/database";
-import responsePacking from "../utils/responsePacking";
+import { DBFilm } from "../../utils/database";
+import responsePacking from "../../utils/responsePacking";
 
 const viewControl = async (req: Request, res: Response, next: NextFunction) => {
     const { filmSlug } = req.body;

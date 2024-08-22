@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 
-import { DBFilm } from "../utils/database";
-import { CURRENT_SEASON } from "../utils/env";
-import { inputPagination } from "../utils/filmQuery";
-import responsePacking from "../utils/responsePacking";
+import { DBFilm } from "../../utils/database";
+import { CURRENT_SEASON } from "../../utils/env";
+import { inputPagination } from "../../utils/filmQuery";
+import responsePacking from "../../utils/responsePacking";
 
 const popularFilms = async (req: Request, res: Response, next: NextFunction) => {
     const { extend } = req.query;

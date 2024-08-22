@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-import { DBFilm } from "../utils/database";
-import responsePacking from "../utils/responsePacking";
+import { DBFilm } from "../../utils/database";
+import responsePacking from "../../utils/responsePacking";
 
 const searchSpecificFilm = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.params.slug) {
