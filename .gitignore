@@ -17,5 +17,3 @@ dist
 
 # TODO: Remove this line after the implement
 fe/src/utils/authenticate/token.ts
-be/src/api/user.ts
-be/src/routes/user.ts

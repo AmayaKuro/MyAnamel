@@ -43,16 +43,45 @@ const DBFilm = DB.collection<{
     }[]
 }>("films");
 
-const DBFollowedFilm = DB.collection<{
+const DBUser = DB.collection<{
+    UUID: string;
     username: string;
+    name: string;
+    password: string;
+    email?: string;
+}>("users");
+
+const DBSession = DB.collection<{
+    ID: string;
+    UUID?: string;
+    createdAt: Date;
+}>("sessions");
+
+const DBViewedEpisode = DB.collection<{
+    UUID: string;
+    filmSlug: string;
+    serverName: string;
+    episodeSlug: string[];
+}>("viewedFilms");
+
+const DBFollowedFilm = DB.collection<{
+    UUID: string;
     filmSlug: string;
 }>("followedFilms");
 
 const DBRatedFilm = DB.collection<{
-    username: string;
+    UUID: string;
     filmSlug: string;
 }>("ratedFilms");
 
+const DBAccessToken = DB.collection<{
+    UUID: string;
+    token: string;
+
+    createdAt: number;
+    expiredAt: number;
+}>("accessTokens");
 
 
-export { DBCategory, DBFilm };
+
+export { DBCategory, DBFilm, DBUser, DBAccessToken };

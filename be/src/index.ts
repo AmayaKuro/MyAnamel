@@ -8,6 +8,7 @@ import commonHeader from './middlewares/commonHeader.js';
 import errorHandler from './middlewares/errorHandler.js';
 
 import filmRouter from './routes/film.js';
+import userRouter from "./routes/user.js";
 
 import { SECRET_KEY, ENV } from "./utils/env.js";
 
@@ -43,6 +44,7 @@ app.use(
 
 // Routes
 app.use("/film", filmRouter);
+app.use("/user", userRouter);
 
 app.get('/', async (req, res) => {
     res.send("No!");
