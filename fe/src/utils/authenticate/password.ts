@@ -1,12 +1,12 @@
 import zxcvbn from 'zxcvbn'
 
-export interface T {
+export interface passwordStrengthOutput {
     score: number,
     text: string,
     color: "error" | "warning" | "info" | "success" | undefined,
 }
 
-export function passwordChecker(password: string): T {
+export function passwordChecker(password: string): passwordStrengthOutput {
     if (password === '') {
         return {
             score: 0,
