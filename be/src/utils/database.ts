@@ -49,13 +49,15 @@ const DBUser = DB.collection<{
     name: string;
     password: string;
     email?: string;
+
+    ip?: string
 }>("users");
 
-const DBSession = DB.collection<{
-    ID: string;
-    UUID?: string;
-    createdAt: Date;
-}>("sessions");
+// const DBSession = DB.collection<{
+//     ID: string;
+//     UUID?: string;
+//     createdAt: Date;
+// }>("sessions");
 
 const DBViewedEpisode = DB.collection<{
     UUID: string;
@@ -80,8 +82,14 @@ const DBAccessToken = DB.collection<{
 
     createdAt: number;
     expiredAt: number;
+
+    ip?: string;
 }>("accessTokens");
 
+const DBBlackListToken = DB.collection<{
+    token: string;
+}>("blackListTokens");
 
 
-export { DBCategory, DBFilm, DBUser, DBAccessToken };
+
+export { DBCategory, DBFilm, DBUser, DBAccessToken, DBBlackListToken };

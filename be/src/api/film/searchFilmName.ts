@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Document } from "mongodb";
 
-import responsePackings from "../../utils/responsePacking";
+import responsePacking from "../../utils/responsePacking";
 import { DBFilm } from "../../utils/database";
 import { inputPagination } from "../../utils/filmQuery";
 
@@ -111,7 +111,7 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
         });
     }
 
-    responsePackings(res, {
+    responsePacking(res, {
         data: {
             films,
             pagination: {

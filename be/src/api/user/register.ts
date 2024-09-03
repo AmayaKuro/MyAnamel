@@ -77,6 +77,8 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
             username: username,
             name: username,
             password: hashedPassword,
+
+            ip: req.ip,
         });
 
         // Login user
@@ -87,7 +89,9 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
             token: accessToken,
             createdAt: Date.now(),
             expiredAt: Date.now() + 3 * 24 * 60 * 60 * 1000,
-        })
+
+            ip: req.ip,
+        });
 
         // Send success response
         responsePacking(res, {
