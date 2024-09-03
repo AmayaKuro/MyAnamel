@@ -13,7 +13,7 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import Typography from "@mui/material/Typography";
 
 import { FilmDisplayProps, BEResponse, CursorPaginationProps } from "@/utils/types";
-import { BACKEND_URL } from "@/utils/env";
+import { useAuth } from "@/utils/providers/auth";
 
 
 const SearchBar: React.FC = () => {
@@ -21,6 +21,9 @@ const SearchBar: React.FC = () => {
     const [films, setFilms] = useState<FilmDisplayProps[]>([]);
 
     const [focus, setFocus] = useState(false);
+
+    const { dispatch: { BEfetch } } = useAuth();
+
     const open = useMemo(() => !!query && focus, [query, focus]);
 
     const router = useRouter();
@@ -28,7 +31,7 @@ const SearchBar: React.FC = () => {
     useEffect(() => {
         if (!query) return;
 
-        fetch(`${BACKEND_URL}/film/search?` + new URLSearchParams({
+        BEfetch(`/film/search?` + new URLSearchParams({
             q: query.trimEnd(),
             extend: "false",
         })).then((response) => response.json())

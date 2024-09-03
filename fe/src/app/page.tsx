@@ -7,7 +7,7 @@ import Slider from "@components/main/Slider";
 import List from "@components/main/List";
 
 import { useAlert } from "@utils/providers/alert";
-import { BACKEND_URL } from "@utils/env";
+import { useAuth } from "@/utils/providers/auth";
 import { ExtendedFilmDisplayProps, BEResponse, ErrorProps, FilmDisplayProps } from "@utils/types";
 
 import styles from "@css/app/Home.module.css";
@@ -15,6 +15,7 @@ import styles from "@css/app/Home.module.css";
 
 const Home: React.FC = () => {
   const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
+  const { dispatch: { BEfetch } } = useAuth();
 
   const [bannerFilms, setBannerFilms] = useState<ExtendedFilmDisplayProps[]>([]);
   // Films for the slider and list
@@ -27,7 +28,7 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/film/popular?extend=true`)
+    BEfetch(`/film/popular?extend=true`)
       .then((response) => response.json())
       .then((res: BEResponse) => {
         if (res.statusCode >= 400) {
@@ -40,7 +41,7 @@ const Home: React.FC = () => {
         setSeverity("error");
       });
 
-    fetch(`${BACKEND_URL}/film/new`)
+    BEfetch(`/film/new`)
       .then((respsonse) => respsonse.json())
       .then((res: BEResponse) => {
         if (res.statusCode >= 400) {

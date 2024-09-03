@@ -8,21 +8,23 @@ import { TextField, LinearProgress } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { motion } from "framer-motion";
 
-import { BACKEND_URL } from '@/utils/env'
+import { useAuth } from '@/utils/providers/auth'
 import { BEResponse } from '@/utils/types'
 
 import styles from '@css/app/Authenticate.module.css'
 
 export default function Register() {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [password2, setPassword2] = useState('')
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [password2, setPassword2] = useState('');
     const [error, setError] = useState({
         username: '',
         password: '',
         extra: '',
-    })
-    const [loading, setLoading] = useState(false)
+    });
+    const [loading, setLoading] = useState(false);
+
+    const { dispatch: { BEfetch } } = useAuth();
 
     const router = useRouter();
 
@@ -44,10 +46,9 @@ export default function Register() {
 
         setLoading(true);
         try {
-            const response = await fetch(`${BACKEND_URL}/user/register`, {
+            const response = await BEfetch(`/user/register`, {
                 headers: {
                     "Content-Type": "application/json",
-                    "credentials": "include",
                 },
                 method: 'POST',
                 body: JSON.stringify({
@@ -66,7 +67,9 @@ export default function Register() {
                 return;
             } else if (res.statusCode === 200) {
                 // Set token and redirect to home page if success
-                window.localStorage.setItem('token', res.data.ac_to);
+                window.localStorage.setItem('ac_to', res.data.ac_to);
+                // Trigger storage event to update the context (storage event doesn't trigger on the same page) 
+                window.dispatchEvent(new Event("storage"));
 
                 router.push('/');
                 setLoading(false);

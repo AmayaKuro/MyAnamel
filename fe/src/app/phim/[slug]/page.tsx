@@ -7,7 +7,7 @@ import Overview from '@/components/filmInfo/Overview';
 import Details from '@/components/filmInfo/Details';
 
 import { useAlert } from '@utils/providers/alert';
-import { BACKEND_URL } from '@utils/env';
+import { useAuth } from '@/utils/providers/auth';
 import type { FilmProps, ErrorProps, BEResponse } from '@utils/types';
 
 import styles from "@css/app/filmInfo.module.css";
@@ -22,6 +22,7 @@ interface RouteParams {
 
 const FilmDetail: React.FC<RouteParams> = ({ params: { slug } }) => {
     const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
+    const { dispatch: { BEfetch } } = useAuth();
 
     const [film, setFilm] = useState<FilmProps>({
         _id: "",
@@ -49,7 +50,7 @@ const FilmDetail: React.FC<RouteParams> = ({ params: { slug } }) => {
 
 
     useEffect(() => {
-        fetch(`${BACKEND_URL}/film/${slug}`)
+        BEfetch(`/film/${slug}`)
             .then((response) => response.json())
             .then((res: BEResponse) => {
                 if (res.statusCode >= 400) {

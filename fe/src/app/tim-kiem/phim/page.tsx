@@ -17,7 +17,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
 import { BEResponse, CursorPaginationProps, ErrorProps, ExtendedFilmDisplayProps } from '@/utils/types';
-import { BACKEND_URL } from '@/utils/env';
+import { useAuth } from '@/utils/providers/auth';
 
 const NameSearch: React.FC = () => {
     // Currently reload this page cause duplicate fetch then duplicate films (no fix today)
@@ -28,6 +28,7 @@ const NameSearch: React.FC = () => {
     const [filter, setFilter] = useState("newest");
     const [error, setError] = useState<ErrorProps>();
 
+    const { dispatch: { BEfetch } } = useAuth();
     const params = useSearchParams();
 
     const query = useMemo(() => {
@@ -44,7 +45,7 @@ const NameSearch: React.FC = () => {
 
     const fetchFilms = useCallback(async () => {
         try {
-            const response = await fetch(`${BACKEND_URL}/film/search?` + new URLSearchParams({
+            const response = await BEfetch(`/film/search?` + new URLSearchParams({
                 q: query,
                 cursor,
                 filter,

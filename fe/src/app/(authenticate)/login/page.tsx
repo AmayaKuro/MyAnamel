@@ -10,17 +10,18 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import { motion } from "framer-motion";
 
 import { BEResponse } from '@/utils/types'
-import { BACKEND_URL } from '@/utils/env'
+import { useAuth } from '@/utils/providers/auth'
 
 import styles from '@css/app/Authenticate.module.css'
 
 export default function Login() {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
-    const [loading, setLoading] = useState(false)
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const { dispatch: { BEfetch } } = useAuth();
 
-    const router = useRouter()
+    const router = useRouter();
 
     const login = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,10 +35,9 @@ export default function Login() {
         setError('');
         setLoading(true);
 
-        const response = await fetch(`${BACKEND_URL}/user/login`, {
+        const response = await BEfetch(`/user/login`, {
             headers: {
                 "Content-Type": "application/json",
-                "credentials": "same-origin",
             },
             method: 'POST',
             body: JSON.stringify({
@@ -52,10 +52,12 @@ export default function Login() {
             setError(res.data?.username || res.data?.password || "Đã xảy ra lỗi, vui lòng thử lại sau!");
             setLoading(false);
         }
-        else {
+        else if (res.statusCode === 200) {
 
             // Set token and redirect to home page if success
-            window.localStorage.setItem('token', res.data.ac_to);
+            window.localStorage.setItem('ac_to', res.data.ac_to);
+            // Trigger storage event to update the context (storage event doesn't trigger on the same page) 
+            window.dispatchEvent(new Event("storage"));
 
             setLoading(false);
             router.push('/');

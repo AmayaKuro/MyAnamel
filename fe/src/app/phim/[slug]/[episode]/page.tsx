@@ -12,7 +12,7 @@ import StarHalfIcon from '@mui/icons-material/StarHalf';
 import StarIcon from '@mui/icons-material/Star';
 
 import { useAlert } from '@utils/providers/alert';
-import { BACKEND_URL } from '@utils/env';
+import { useAuth } from '@/utils/providers/auth';
 import type { FilmProps, currentEpisodeProps, FilmDisplayProps, ErrorProps, BEResponse } from '@utils/types';
 
 import styles from "@css/app/FilmViewer.module.css";
@@ -28,6 +28,7 @@ interface RouteParams {
 
 const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
     const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
+    const { dispatch: { BEfetch } } = useAuth();
 
     const [currentEpisode, setCurrentEpisode] = useState<currentEpisodeProps>();
     const [film, setFilm] = useState<FilmProps | null>(null);
@@ -36,7 +37,7 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
 
     // Fetch film data
     useEffect(() => {
-        fetch(`${BACKEND_URL}/film/${slug}`)
+        BEfetch(`/film/${slug}`)
             .then((response) => response.json())
             .then((res: BEResponse) => {
                 if (res.statusCode >= 400) {
@@ -89,7 +90,7 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
     useEffect(() => {
         if (!film) return;
 
-        fetch(`${BACKEND_URL}/film/new`)
+        BEfetch(`/film/new`)
             .then((response) => response.json())
             .then((res: BEResponse) => {
                 if (res.statusCode >= 400) {
@@ -108,7 +109,7 @@ const FilmViewer: React.FC<RouteParams> = ({ params: { slug, episode } }) => {
         if (!currentEpisode || !film) return;
         console.log("sending view status to BE", currentEpisode, film);
 
-         fetch(`${BACKEND_URL}/film/view`, {
+         BEfetch(`/film/view`, {
             headers: {
                 "Content-Type": "application/json",
             },

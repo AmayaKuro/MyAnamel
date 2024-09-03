@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import { Theme } from "@utils/providers/framework";
+import { Theme, AnimateProvider } from "@utils/providers/framework";
 import Alert from "@utils/providers/alert";
 import Navbar from "@components/navbar";
+import Auth from "@/utils/providers/auth";
 
 import "@css/globals.css";
 
@@ -23,10 +24,14 @@ export default function RootLayout({
     <html lang="en" data-mui-color-scheme="dark">
       <body className={inter.className}>
         <Theme>
-          <Alert>
-            <Navbar />
-            {children}
-          </Alert>
+          <AnimateProvider>
+            <Alert>
+              <Auth>
+                <Navbar />
+                {children}
+              </Auth>
+            </Alert>
+          </AnimateProvider>
         </Theme>
       </body >
     </html >

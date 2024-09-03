@@ -6,7 +6,7 @@ import {
   experimental_extendTheme as extendTheme
 } from '@mui/material/styles';
 
-// import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 
 export const Theme = ({ children }: {
@@ -46,6 +46,8 @@ export const Theme = ({ children }: {
 };
 
 
-// export const AnimateProvider = ({ children }: Props) => {
-//   return <AnimatePresence mode="wait">{children}</AnimatePresence>;
-// }
+export const AnimateProvider = ({ children }: {
+  children?: React.ReactNode;
+}) => {
+  return <AnimatePresence mode="wait">{children}</AnimatePresence>;
+}
