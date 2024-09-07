@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { use, useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 
 import Overview from '@/components/filmInfo/Overview';
@@ -46,8 +46,35 @@ const FilmDetail: React.FC<RouteParams> = ({ params: { slug } }) => {
         duration: 0,
         episodes: []
     });
+    const [following, setFollowing] = useState(false);
     const [error, setError] = useState<ErrorProps | null>(null);
 
+    const followManage = useCallback(() => {
+        if (!film._id) return;
+
+        BEfetch(`/film/follow`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                filmSlug: film.slug,
+                action: following ? "unfollow" : "follow",
+            }),
+        }).then((res) => {
+            if (res.status === 200) {
+                setFollowing(!following);
+            } else {
+                setAlertMessage("Failed to follow/unfollow the film");
+                setSeverity("error");
+            }
+        });
+    }, [film]);
+
+    const followUtils = useMemo(() => ({
+        following,
+        followManage,
+    }), [following, followManage]);
 
     useEffect(() => {
         BEfetch(`/film/${slug}`)
@@ -56,12 +83,28 @@ const FilmDetail: React.FC<RouteParams> = ({ params: { slug } }) => {
                 if (res.statusCode >= 400) {
                     throw (res);
                 }
-                
+
                 setFilm(res.data as FilmProps);
             }).catch((err) => {
                 setError(err);
             });
     }, []);
+
+    useEffect(() => {
+        if (!film._id) return;
+
+        BEfetch(`/user/follow/${film.slug}`)
+            .then((res) => setFollowing(res.status === 200))
+        // .then((res: BEResponse) => {
+        //     if (res.statusCode >= 400) {
+        //         throw res;
+        //     }
+
+        //     setFollowing(res.data.following);
+        // }).catch((err) => {
+        //     setError(err);
+        // });
+    }, [film]);
 
     useEffect(() => {
         if (!error) return;
@@ -72,7 +115,7 @@ const FilmDetail: React.FC<RouteParams> = ({ params: { slug } }) => {
 
     return (
         <div className={styles.main}>
-            <Overview film={film} />
+            <Overview film={film} followUtils={followUtils} />
             <Details film={film} />
 
             <div className={styles.moreFilm}>

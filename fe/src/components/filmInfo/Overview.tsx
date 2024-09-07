@@ -11,21 +11,25 @@ import StarHalfIcon from '@mui/icons-material/StarHalf';
 import StarIcon from '@mui/icons-material/Star';
 import ListIcon from '@mui/icons-material/List';
 import BrowseGalleryIcon from '@mui/icons-material/BrowseGallery';
+import Box from '@mui/system/Box';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import type { FilmProps } from '@utils/types';
-import { useAlert } from '@utils/providers/alert';
 
 import styles from "@css/component/filmInfo/Overview.module.css";
 
 
 interface ComponentProps {
     film: FilmProps;
+    followUtils: {
+        following: boolean;
+        followManage: () => void;
+    };
 }
 
 
-const Overview: React.FC<ComponentProps> = ({ film }) => {
-    const { dispatch: { setAlertMessage, setSeverity } } = useAlert();
-
+const Overview: React.FC<ComponentProps> = ({ film, followUtils: { following, followManage } }) => {
     const [rating, setRating] = useState(film.rating);
 
 
@@ -66,17 +70,34 @@ const Overview: React.FC<ComponentProps> = ({ film }) => {
                             {film.currentEpisode}/{film.totalEpisode ? film.totalEpisode : "?"}
                         </p>
                     </div>
-                    <Button
-                        href={film.name ? `/phim/${film.slug}/${film.episodes[0].data[0].slug}` : "#"}
-                        variant="contained"
-                        color="primary"
-                        startIcon={<LiveTvIcon />}
-                    >
-                        Xem ngay
-                    </Button>
+                    <Box display="flex" gap="1rem">
+                        <Button
+                            href={film.name ? `/phim/${film.slug}/${film.episodes[0].data[0].slug}` : "#"}
+                            variant="contained"
+                            color="primary"
+                            startIcon={<LiveTvIcon />}
+                        >
+                            Xem ngay
+                        </Button>
+                        <Button
+                            onClick={() => followManage()}
+                            {...(following ? {
+                                variant: "contained",
+                                color: "success",
+                                startIcon: <FavoriteIcon />,
+                            }
+                                : {
+                                    variant: "outlined",
+                                    color: "primary",
+                                    startIcon: <FavoriteBorderIcon />,
+                                })}
+                        >
+                            {following ? "Huỷ theo dõi" : "Theo dõi"}
+                        </Button>
+                    </Box>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

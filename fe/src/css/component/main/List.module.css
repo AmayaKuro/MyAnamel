@@ -12,12 +12,6 @@
     flex: auto;
 }
 
-.film {
-    position: relative;
-    width: 215px;
-    text-decoration: none;
-    color: inherit;
-}
 
 .film img {
     border-radius: 1rem;

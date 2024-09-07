@@ -37,7 +37,7 @@ const Options: React.FC = () => {
 
     return (
         <>
-            <IconButton title="More" size="large" children={<MoreHorizIcon fontSize="medium" />} />
+            <IconButton href="/user/theo-doi" title="More" size="large" children={<MoreHorizIcon fontSize="medium" />} />
             {isLoggedIn
                 ? <IconButton
                     title="Account"
@@ -45,9 +45,7 @@ const Options: React.FC = () => {
                     children={<AccountCircleIcon fontSize="medium" />}
                     onClick={() => logout()}
                 />
-                : <Link href="/login">
-                    <Button variant="contained" color="primary">Login</Button>
-                </Link>
+                : <Button href="/login" variant="contained" color="primary">Login</Button>
             }
         </>
     );
