@@ -66,10 +66,10 @@ const DBViewedEpisode = DB.collection<{
     episodeSlug: string[];
 }>("viewedFilms");
 
-const DBFollowedFilm = DB.collection<{
+const DBFollowingFilm = DB.collection<{
     UUID: string;
     filmSlug: string;
-}>("followedFilms");
+}>("followingFilms");
 
 const DBRatedFilm = DB.collection<{
     UUID: string;
@@ -92,4 +92,4 @@ const DBBlackListToken = DB.collection<{
 
 
 
-export { DBCategory, DBFilm, DBUser, DBAccessToken, DBBlackListToken };
+export { DBCategory, DBFilm, DBUser, DBAccessToken, DBBlackListToken, DBFollowingFilm };

@@ -10,18 +10,19 @@ const authorize = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!authorization) {
         return next({
-            statusCode: 400,
+            statusCode: 401,
             message: "Bad request",
         });
     }
 
     const ac_to = authorization.split(" ")[1];
+    console.log(ac_to)
 
     // Check if token blacklisted
     if (await DBBlackListToken.findOne({ token: ac_to })) {
         return next({
-            statusCode: 400,
-            message: "Bad request",
+            statusCode: 401,
+            message: "Token invalid",
         });
     }
 
@@ -29,10 +30,19 @@ const authorize = async (req: Request, res: Response, next: NextFunction) => {
 
     // Check if token valid
     // Alternative: accessToken.expiredAt < Date.now() 
-    if (!accessToken || !jwt.verify(ac_to, SECRET_KEY)) {
-        return responsePacking(res, {
-            statusCode: 400,
-            message: "Bad request",
+    try {
+        if (!accessToken) {
+            return next({
+                statusCode: 401,
+                message: "Token invalid",
+            });
+        }
+
+        jwt.verify(ac_to, SECRET_KEY);
+    } catch (error) {
+        return next({
+            statusCode: 401,
+            message: "Token invalid",
         });
     }
 

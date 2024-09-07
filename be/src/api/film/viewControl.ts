@@ -3,10 +3,18 @@ import { Request, Response, NextFunction } from "express";
 import { DBFilm } from "../../utils/database";
 import responsePacking from "../../utils/responsePacking";
 
+// This will be use for rate limiting for view count (should switch from IP to user's other unique identifier)
+var viewHistory: {
+    IP: string;
+    viewCountCoolDown: {
+        [filmSlug: string]: number;
+    };
+}[] = [];
+
 const viewControl = async (req: Request, res: Response, next: NextFunction) => {
     const { filmSlug } = req.body;
     let film;
-    // TODO: currently not working (view not increasing)
+
     try {
         film = await DBFilm.updateOne({
             slug: filmSlug,
