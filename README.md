@@ -7,11 +7,11 @@
 ![Project Preview](./.github/asset/preview.png)
 ![Project Preview1](./.github/asset/preview1.png)
 
-Anime Distributor is a web application built with a Next.js frontend and Express.js/MongoDB backend. It allows users to watch anime,follow, track view counts, receive basic film recommendations. This project use crawler to an API to obtain its content. Users can enjoy seamless interaction with the platform by creating an account and exploring anime content in one place.
+Anime distributor built with a Next.js frontend and Express.js + MongoDB backend. It allows users to watch anime,follow, track view counts, receive basic film recommendations. This project use crawler to an API to obtain its content. Offers personalized anime content to its users.
 
 ## GETTING STARTED
 ### Prerequisites
-You need to have Node.js and MongoDB installed on your machine.
+You need to have Node.js and MongoDB installed on your machine, as well as Next.js
 
 ### Installation
 1. Clone the repository:
