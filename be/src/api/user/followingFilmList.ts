@@ -8,7 +8,6 @@ const followingFilmList = async (req: Request, res: Response, next: NextFunction
         UUID: req.user.UUID
     }).toArray()).map((followingFilm) => followingFilm.filmSlug);
 
-    console.log("followingFilmSlugs", followingFilmSlugs)
     const films = await DBFilm.find({
         slug: {
             $in: [...followingFilmSlugs],

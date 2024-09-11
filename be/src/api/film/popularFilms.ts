@@ -9,7 +9,6 @@ const popularFilms = async (req: Request, res: Response, next: NextFunction) => 
     const { extend } = req.query;
     const { page } = inputPagination(req);
 
-    let films;
     let pipeline = [
         ...(page ? [
             {
@@ -83,16 +82,7 @@ const popularFilms = async (req: Request, res: Response, next: NextFunction) => 
         ] : [])
     ];
 
-    try {
-        films = await DBFilm.aggregate(pipeline).toArray();
-    } catch (err) {
-        console.log(err);
-
-        return next({
-            statusCode: 500,
-            message: "Internal server error",
-        });
-    }
+    const films = await DBFilm.aggregate(pipeline).toArray();
 
     responsePacking(res, {
         data: films,

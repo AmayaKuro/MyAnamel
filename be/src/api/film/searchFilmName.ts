@@ -19,7 +19,6 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
         });
     }
 
-    let films;
     let pipeline: Document[] = [
         {
             $match: {
@@ -100,16 +99,7 @@ const searchFilmName = async (req: Request, res: Response, next: NextFunction) =
             break;
     };
 
-    try {
-        films = await DBFilm.aggregate(pipeline).toArray();
-    } catch (err) {
-        console.log(err);
-
-        return next({
-            statusCode: 500,
-            message: "Internal server error",
-        });
-    }
+    const films = await DBFilm.aggregate(pipeline).toArray();
 
     responsePacking(res, {
         data: {

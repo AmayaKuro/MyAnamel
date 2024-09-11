@@ -11,7 +11,6 @@ const searchSpecificFilm = async (req: Request, res: Response, next: NextFunctio
         });
     }
 
-    let film;
     let pipeline = [
         {
             $match: {
@@ -31,16 +30,7 @@ const searchSpecificFilm = async (req: Request, res: Response, next: NextFunctio
         },
     ];
 
-    try {
-        film = await DBFilm.aggregate(pipeline).toArray();
-    } catch (err) {
-        console.log(err);
-
-        return next({
-            statusCode: 500,
-            message: "Internal server error",
-        });
-    }
+    const film = await DBFilm.aggregate(pipeline).toArray();
 
     // If film not found, return 400
     if (!film[0]) {

@@ -16,7 +16,6 @@ const authorize = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     const ac_to = authorization.split(" ")[1];
-    console.log(ac_to)
 
     // Check if token blacklisted
     if (await DBBlackListToken.findOne({ token: ac_to })) {

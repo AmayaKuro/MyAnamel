@@ -13,24 +13,14 @@ var viewHistory: {
 
 const viewControl = async (req: Request, res: Response, next: NextFunction) => {
     const { filmSlug } = req.body;
-    let film;
 
-    try {
-        film = await DBFilm.updateOne({
-            slug: filmSlug,
-        }, {
-            $inc: {
-                views: 1,
-            },
-        });
-
-        console.log("output film", film)
-    } catch (err) {
-        return next({
-            statusCode: 500,
-            message: "Internal server error",
-        });
-    }
+    const film = await DBFilm.updateOne({
+        slug: filmSlug,
+    }, {
+        $inc: {
+            views: 1,
+        },
+    });
 
     if (!film) {
         return responsePacking(res, {

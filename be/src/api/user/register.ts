@@ -10,7 +10,6 @@ import { SECRET_KEY } from "../../utils/env";
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
     const { username, password } = req.body;
-    let user;
 
     // Check type to prevent crash
     if (typeof username !== "string" || typeof password !== "string") {
@@ -56,56 +55,50 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     // Check if user existed
-    try {
-        user = await DBUser.findOne({ username: username });
 
-        if (user) {
-            return responsePacking(res, {
-                statusCode: 400,
-                message: "error",
-                data: { "username": "Tài khoản đã tồn tại!" },
-            });
-        }
+    const user = await DBUser.findOne({ username: username });
 
-        // Prepare user data
-        let UUID = crypto.randomUUID();
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Insert user
-        DBUser.insertOne({
-            UUID: UUID,
-            username: username,
-            name: username,
-            password: hashedPassword,
-
-            ip: req.ip,
-        });
-
-        // Login user
-        const accessToken = jwt.sign({ UUID: UUID }, SECRET_KEY, { expiresIn: "3d" });
-
-        DBAccessToken.insertOne({
-            UUID: UUID,
-            token: accessToken,
-            createdAt: Date.now(),
-            expiredAt: Date.now() + 3 * 24 * 60 * 60 * 1000,
-
-            ip: req.ip,
-        });
-
-        // Send success response
-        responsePacking(res, {
-            data: {
-                name: username,
-                ac_to: accessToken,
-            },
-        });
-    } catch (err) {
-        return next({
-            statusCode: 500,
-            message: "Internal server error",
+    if (user) {
+        return responsePacking(res, {
+            statusCode: 400,
+            message: "error",
+            data: { "username": "Tài khoản đã tồn tại!" },
         });
     }
+
+    // Prepare user data
+    let UUID = crypto.randomUUID();
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert user
+    DBUser.insertOne({
+        UUID: UUID,
+        username: username,
+        name: username,
+        password: hashedPassword,
+
+        ip: req.ip,
+    });
+
+    // Login user
+    const accessToken = jwt.sign({ UUID: UUID }, SECRET_KEY, { expiresIn: "3d" });
+
+    DBAccessToken.insertOne({
+        UUID: UUID,
+        token: accessToken,
+        createdAt: Date.now(),
+        expiredAt: Date.now() + 3 * 24 * 60 * 60 * 1000,
+
+        ip: req.ip,
+    });
+
+    // Send success response
+    responsePacking(res, {
+        data: {
+            name: username,
+            ac_to: accessToken,
+        },
+    });
 }
 
 
